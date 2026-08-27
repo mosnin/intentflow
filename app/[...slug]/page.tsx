@@ -36,5 +36,5 @@ export default async function StaticPage({
   const page = structured[route];
   if (!page) notFound();
 
-  return <TemplateContentPage page={page} />;
+  return <TemplateContentPage page={page} route={route} />;
 }

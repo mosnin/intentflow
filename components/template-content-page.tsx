@@ -3,6 +3,7 @@ import { CornerPlus } from "@/components/corner-plus";
 import { CutButton } from "@/components/cut-button";
 import { Footer } from "@/components/footer";
 import { HeroWaves } from "@/components/hero-waves";
+import { IndustrySearchExamples } from "@/components/industry-search-examples";
 import { InteractiveForm } from "@/components/interactive-form";
 import { Nav } from "@/components/nav";
 import { TemplateAccordion } from "@/components/template-accordion";
@@ -11,6 +12,7 @@ import type {
   StructuredPage,
   StructuredSection,
 } from "@/lib/structured-content";
+import { industryProfilesByRoute } from "@/lib/industries";
 import { ArrowRight } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
 
@@ -352,13 +354,20 @@ export function TemplateSections({
   ));
 }
 
-export function TemplateContentPage({ page }: { page: StructuredPage }): ReactNode {
+export function TemplateContentPage({
+  page,
+  route,
+}: {
+  page: StructuredPage;
+  route: string;
+}): ReactNode {
   const success = page.sections.find((section) =>
     ["Your assessment is being prepared.", "You're all set."].includes(section.heading),
   );
   const visibleSections = success
     ? page.sections.filter((section) => section !== success)
     : page.sections;
+  const industryProfile = industryProfilesByRoute[route];
 
   return (
     <>
@@ -366,6 +375,9 @@ export function TemplateContentPage({ page }: { page: StructuredPage }): ReactNo
       <Nav />
       <main id="main-content" className="flex-1">
         <PageHero page={page} />
+        {industryProfile ? (
+          <IndustrySearchExamples profile={industryProfile} />
+        ) : null}
         <TemplateSections sections={visibleSections} success={success} />
       </main>
       <Footer />

@@ -3,9 +3,10 @@
 import { CutButton } from "@/components/cut-button";
 import { Logo } from "@/components/logo";
 import { NavVisual } from "@/components/nav-visual";
+import { industryProfiles } from "@/lib/industries";
 import { softEase, useReducedMotion } from "@/lib/motion";
 import {
-  BadgeCheck,
+  ArrowUpRight,
   ChevronDown,
   Cloud,
   Menu,
@@ -54,15 +55,6 @@ const PLATFORM_ITEMS: PlatformItem[] = [
     featureDesc:
       "IntentFlow OSA and Authority engineer presence across all three layers simultaneously. One operational engine.",
   },
-  {
-    title: "Case Studies",
-    desc: "Fourteen verticals. Fourteen wins.",
-    href: "/case-studies",
-    icon: BadgeCheck,
-    featureTitle: "A snapshot from the case-study library.",
-    featureDesc:
-      "Fourteen anonymized campaigns across fourteen verticals — every figure sourced from native Search Console and Webmaster Tools.",
-  },
 ];
 
 const SIMPLE_LINKS = [
@@ -84,25 +76,37 @@ function useScrolled(threshold = 8): boolean {
 export function Nav(): ReactNode {
   const scrolled = useScrolled();
   const prefersReducedMotion = useReducedMotion();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [productsOpen, setProductsOpen] = useState(false);
+  const [industriesOpen, setIndustriesOpen] = useState(false);
   const [activeItem, setActiveItem] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [mobilePlatformOpen, setMobilePlatformOpen] = useState(false);
+  const [mobileIndustriesOpen, setMobileIndustriesOpen] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const openMenu = (): void => {
+  const openProducts = (): void => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    setMenuOpen(true);
+    setIndustriesOpen(false);
+    setProductsOpen(true);
+  };
+  const openIndustries = (): void => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setProductsOpen(false);
+    setIndustriesOpen(true);
   };
   const scheduleClose = (): void => {
     if (closeTimer.current) clearTimeout(closeTimer.current);
-    closeTimer.current = setTimeout(() => setMenuOpen(false), 120);
+    closeTimer.current = setTimeout(() => {
+      setProductsOpen(false);
+      setIndustriesOpen(false);
+    }, 120);
   };
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent): void => {
       if (e.key === "Escape") {
-        setMenuOpen(false);
+        setProductsOpen(false);
+        setIndustriesOpen(false);
         setMobileOpen(false);
       }
     };
@@ -137,15 +141,18 @@ export function Nav(): ReactNode {
             {/* Expandable */}
             <div
               className="relative"
-              onMouseEnter={openMenu}
+              onMouseEnter={openProducts}
               onMouseLeave={scheduleClose}
             >
               <button
                 type="button"
-                onClick={() => setMenuOpen((v) => !v)}
-                aria-expanded={menuOpen}
+                onClick={() => {
+                  setIndustriesOpen(false);
+                  setProductsOpen((value) => !value);
+                }}
+                aria-expanded={productsOpen}
                 className={`focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
-                  menuOpen
+                  productsOpen
                     ? "text-accent"
                     : "text-foreground/80 hover:text-foreground"
                 }`}
@@ -153,14 +160,14 @@ export function Nav(): ReactNode {
                 Products
                 <ChevronDown
                   className={`h-4 w-4 transition-transform duration-300 ${
-                    menuOpen ? "rotate-180" : ""
+                    productsOpen ? "rotate-180" : ""
                   }`}
                   aria-hidden="true"
                 />
               </button>
 
               <AnimatePresence>
-                {menuOpen && (
+                {productsOpen && (
                   <motion.div
                     initial={{ opacity: 0, y: 8 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -228,6 +235,75 @@ export function Nav(): ReactNode {
               </AnimatePresence>
             </div>
 
+            <div
+              className="relative"
+              onMouseEnter={openIndustries}
+              onMouseLeave={scheduleClose}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setProductsOpen(false);
+                  setIndustriesOpen((value) => !value);
+                }}
+                aria-expanded={industriesOpen}
+                className={`focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                  industriesOpen
+                    ? "text-accent"
+                    : "text-foreground/80 hover:text-foreground"
+                }`}
+              >
+                Industries
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    industriesOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <AnimatePresence>
+                {industriesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                    className="absolute left-3 top-full pt-3"
+                  >
+                    <div className="grid max-h-[calc(100vh-92px)] w-[660px] grid-cols-2 gap-px overflow-y-auto rounded-md border border-border bg-border shadow-2xl shadow-black/10">
+                      {industryProfiles.map((industry, index) => (
+                        <a
+                          key={industry.route}
+                          href={industry.route}
+                          className={`focus-ring group flex min-h-[74px] items-start justify-between gap-4 bg-background p-4 transition-colors hover:bg-muted ${
+                            index === industryProfiles.length - 1 &&
+                            industryProfiles.length % 2 === 1
+                              ? "col-span-2"
+                              : ""
+                          }`}
+                        >
+                          <span className="flex min-w-0 flex-col">
+                            <span className="text-[13px] font-medium tracking-tight">
+                              {industry.name}
+                            </span>
+                            <span className="mt-1 text-xs leading-snug text-muted-foreground">
+                              {industry.description}
+                            </span>
+                          </span>
+                          <ArrowUpRight
+                            className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-[#b8500c]"
+                            strokeWidth={1.5}
+                            aria-hidden="true"
+                          />
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
             {SIMPLE_LINKS.map((link) => (
               <a
                 key={link.href}
@@ -281,7 +357,10 @@ export function Nav(): ReactNode {
             <div className="mx-auto max-w-[1440px] px-5 py-4 sm:px-8">
               <button
                 type="button"
-                onClick={() => setMobilePlatformOpen((v) => !v)}
+                onClick={() => {
+                  setMobileIndustriesOpen(false);
+                  setMobilePlatformOpen((v) => !v);
+                }}
                 aria-expanded={mobilePlatformOpen}
                 className="focus-ring flex w-full items-center justify-between rounded-md px-2 py-3 text-sm font-medium"
               >
@@ -322,6 +401,61 @@ export function Nav(): ReactNode {
                               {item.desc}
                             </span>
                           </span>
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              <button
+                type="button"
+                onClick={() => {
+                  setMobilePlatformOpen(false);
+                  setMobileIndustriesOpen((v) => !v);
+                }}
+                aria-expanded={mobileIndustriesOpen}
+                className="focus-ring flex w-full items-center justify-between rounded-md px-2 py-3 text-sm font-medium"
+              >
+                Industries
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    mobileIndustriesOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <AnimatePresence>
+                {mobileIndustriesOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.22 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="grid gap-1 pb-2 pl-2 sm:grid-cols-2">
+                      {industryProfiles.map((industry) => (
+                        <a
+                          key={industry.route}
+                          href={industry.route}
+                          onClick={() => setMobileOpen(false)}
+                          className="focus-ring hover:bg-muted flex items-start justify-between gap-3 rounded-md p-2.5"
+                        >
+                          <span className="flex min-w-0 flex-col">
+                            <span className="text-sm font-medium">
+                              {industry.name}
+                            </span>
+                            <span className="text-muted-foreground text-xs leading-snug">
+                              {industry.description}
+                            </span>
+                          </span>
+                          <ArrowUpRight
+                            className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0"
+                            strokeWidth={1.5}
+                            aria-hidden="true"
+                          />
                         </a>
                       ))}
                     </div>
