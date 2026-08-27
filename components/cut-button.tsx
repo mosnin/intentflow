@@ -27,7 +27,7 @@ type AnchorProps = BaseProps &
 type CutButtonProps = ButtonProps | AnchorProps;
 
 const BASE =
-  "inline-flex items-center justify-center gap-2 text-sm font-medium tracking-wide transition-colors duration-200 focus-ring";
+  "inline-flex items-center justify-center gap-2 text-sm font-medium tracking-wide transition-[background-color,color,transform] duration-200 active:scale-[0.98] focus-ring";
 
 export function CutButton({
   variant = "solid",
@@ -42,7 +42,9 @@ export function CutButton({
   const isAnchor = "href" in props && props.href !== undefined;
 
   if (variant === "solid") {
-    const size = iconOnly ? "h-10 w-10" : `h-10 px-5 ${fullWidth ? "w-full" : ""}`;
+    const size = iconOnly
+      ? "h-11 w-11"
+      : `h-11 px-5 ${fullWidth ? "w-full" : ""}`;
     const cls = `${BASE} ${size} ${CUT} bg-foreground text-background hover:bg-foreground/85 ${className}`;
 
     if (isAnchor) {
@@ -60,7 +62,9 @@ export function CutButton({
     );
   }
 
-  const wrapperSize = iconOnly ? "h-10 w-10" : `h-10 ${fullWidth ? "w-full" : ""}`;
+  const wrapperSize = iconOnly
+    ? "h-[46px] w-[46px]"
+    : `h-[46px] ${fullWidth ? "w-full" : ""}`;
   const wrapper = `inline-flex ${wrapperSize} bg-border p-px ${CUT} ${className}`;
   const innerSize = iconOnly ? "w-full" : `px-5 ${fullWidth ? "w-full" : ""}`;
   const inner = `${BASE} h-full ${innerSize} ${CUT} bg-background text-foreground hover:bg-muted`;

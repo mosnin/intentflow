@@ -10,7 +10,7 @@ function fieldInput(block: ContentBlock): ReactNode {
       <select
         id={block.name}
         name={block.name}
-        className="mt-2 min-h-11 w-full border border-border bg-background px-3 text-sm outline-none focus:border-foreground"
+        className="border-border bg-background focus:border-foreground focus:ring-foreground/20 mt-2 min-h-11 w-full border px-3 text-base outline-none focus:ring-2"
       >
         {block.options?.map((option) => (
           <option key={option}>{option}</option>
@@ -25,7 +25,7 @@ function fieldInput(block: ContentBlock): ReactNode {
       name={block.name}
       type={block.fieldType ?? "text"}
       placeholder={block.text}
-      className="mt-2 min-h-11 w-full border border-border bg-background px-3 text-sm outline-none focus:border-foreground focus:ring-2 focus:ring-foreground/20"
+      className="border-border bg-background focus:border-foreground focus:ring-foreground/20 mt-2 min-h-11 w-full border px-3 text-base outline-none focus:ring-2"
     />
   );
 }
@@ -48,9 +48,12 @@ function FormFields({
 
     if (block.type === "paragraph") {
       rendered.push(
-        <p key={key} className="text-sm leading-relaxed text-muted-foreground sm:col-span-2">
+        <p
+          key={key}
+          className="text-muted-foreground text-base leading-7 sm:col-span-2"
+        >
           {block.text}
-        </p>,
+        </p>
       );
       continue;
     }
@@ -62,12 +65,12 @@ function FormFields({
           key={key}
           className={
             isStep
-              ? "font-mono text-[10px] uppercase tracking-[0.16em] text-[#b8500c] sm:col-span-2"
-              : "-mt-2 text-xs text-muted-foreground sm:col-span-2"
+              ? "font-mono text-[10px] tracking-[0.16em] text-[#b8500c] uppercase sm:col-span-2"
+              : "text-muted-foreground -mt-2 text-xs sm:col-span-2"
           }
         >
           {block.text}
-        </p>,
+        </p>
       );
       continue;
     }
@@ -77,11 +80,11 @@ function FormFields({
       if (next?.type === "field" || next?.type === "select") {
         rendered.push(
           <div key={key} className="sm:col-span-2">
-            <label htmlFor={block.htmlFor} className="text-xs font-semibold">
+            <label htmlFor={block.htmlFor} className="text-sm font-semibold">
               {block.text}
             </label>
             {fieldInput(next)}
-          </div>,
+          </div>
         );
         index += 1;
         continue;
@@ -99,28 +102,44 @@ function FormFields({
       if (labels.length > 1) {
         const groupName = `choice-${index}`;
         rendered.push(
-          <fieldset key={key} className="border-t border-dotted border-border pt-4 sm:col-span-2">
-            <legend className="mb-3 text-xs font-semibold">{labels[0]?.text}</legend>
+          <fieldset
+            key={key}
+            className="border-border border-t border-dotted pt-4 sm:col-span-2"
+          >
+            <legend className="mb-3 text-xs font-semibold">
+              {labels[0]?.text}
+            </legend>
             <div className="grid gap-2 sm:grid-cols-2">
               {labels.slice(1).map((option, optionIndex) => (
                 <label
                   key={`${option.text}-${optionIndex}`}
-                  className="flex min-h-10 cursor-pointer items-center gap-2.5 border border-border px-3 text-sm text-muted-foreground transition-colors hover:border-foreground hover:text-foreground"
+                  className="border-border text-muted-foreground hover:border-foreground hover:text-foreground active:bg-muted flex min-h-11 cursor-pointer items-center gap-2.5 border px-3 text-sm transition-colors"
                 >
-                  <input type="radio" name={groupName} value={option.text} className="accent-[#b8500c]" />
+                  <input
+                    type="radio"
+                    name={groupName}
+                    value={option.text}
+                    className="accent-[#b8500c]"
+                  />
                   {option.text}
                 </label>
               ))}
             </div>
-          </fieldset>,
+          </fieldset>
         );
         index = cursor - 1;
       } else {
         rendered.push(
-          <label key={key} className="flex cursor-pointer gap-3 border-t border-dotted border-border pt-4 text-xs leading-relaxed text-muted-foreground sm:col-span-2">
-            <input type="checkbox" className="mt-0.5 h-4 w-4 shrink-0 accent-[#b8500c]" />
+          <label
+            key={key}
+            className="border-border text-muted-foreground flex cursor-pointer gap-3 border-t border-dotted pt-4 text-xs leading-relaxed sm:col-span-2"
+          >
+            <input
+              type="checkbox"
+              className="mt-0.5 h-4 w-4 shrink-0 accent-[#b8500c]"
+            />
             {block.text}
-          </label>,
+          </label>
         );
       }
       continue;
@@ -130,7 +149,7 @@ function FormFields({
       rendered.push(
         <div key={key} className="sm:col-span-2">
           {fieldInput(block)}
-        </div>,
+        </div>
       );
       continue;
     }
@@ -142,19 +161,19 @@ function FormFields({
             <CutButton variant="solid" type="button" onClick={onContinue}>
               {block.text}
             </CutButton>
-          </div>,
+          </div>
         );
       } else if (block.text.includes("Back")) {
         rendered.push(
           <CutButton key={key} variant="outline" type="button" onClick={onBack}>
             {block.text}
-          </CutButton>,
+          </CutButton>
         );
       } else {
         rendered.push(
           <CutButton key={key} variant="solid" type="submit">
             {block.text}
-          </CutButton>,
+          </CutButton>
         );
       }
     }
@@ -173,7 +192,7 @@ export function InteractiveForm({
   const [submitted, setSubmitted] = useState(false);
   const [step, setStep] = useState(1);
   const continueIndex = blocks.findIndex(
-    (block) => block.type === "action" && block.text.includes("Continue"),
+    (block) => block.type === "action" && block.text.includes("Continue")
   );
   const isMultiStep = continueIndex >= 0;
   const visibleBlocks = isMultiStep
@@ -184,8 +203,8 @@ export function InteractiveForm({
 
   if (submitted) {
     return (
-      <div className="border border-border bg-background p-7 sm:p-10 [clip-path:polygon(18px_0,100%_0,100%_calc(100%-18px),calc(100%-18px)_100%,0_100%,0_18px)]">
-        <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-[#b8500c]">
+      <div className="border-border bg-background border p-7 [clip-path:polygon(18px_0,100%_0,100%_calc(100%-18px),calc(100%-18px)_100%,0_100%,0_18px)] sm:p-10">
+        <span className="font-mono text-[10px] tracking-[0.16em] text-[#b8500c] uppercase">
           IntentFlow
         </span>
         <h3 className="mt-5 font-serif text-3xl leading-tight">
@@ -195,18 +214,42 @@ export function InteractiveForm({
           {success?.blocks.map((block, index) => {
             const key = `${block.type}-${block.text}-${index}`;
             if (block.type === "paragraph") {
-              return <p key={key} className="text-sm leading-relaxed text-muted-foreground">{block.text}</p>;
+              return (
+                <p
+                  key={key}
+                  className="text-muted-foreground text-sm leading-relaxed"
+                >
+                  {block.text}
+                </p>
+              );
             }
             if (block.type === "list-item") {
-              return <p key={key} className="border-t border-dotted border-border pt-2 text-sm text-muted-foreground">{block.text}</p>;
+              return (
+                <p
+                  key={key}
+                  className="border-border text-muted-foreground border-t border-dotted pt-2 text-sm"
+                >
+                  {block.text}
+                </p>
+              );
             }
             if (block.type === "text") {
-              return <p key={key} className="font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">{block.text}</p>;
+              return (
+                <p
+                  key={key}
+                  className="text-muted-foreground font-mono text-[10px] tracking-[0.14em] uppercase"
+                >
+                  {block.text}
+                </p>
+              );
             }
             if (block.type === "action") {
               return (
                 <div key={key} className="pt-2">
-                  <CutButton href={block.href || "/discovery-call"} variant="solid">
+                  <CutButton
+                    href={block.href || "/discovery-call"}
+                    variant="solid"
+                  >
                     {block.text}
                   </CutButton>
                 </div>
@@ -225,7 +268,7 @@ export function InteractiveForm({
         event.preventDefault();
         setSubmitted(true);
       }}
-      className="grid gap-4 border border-border bg-background p-6 shadow-2xl shadow-black/[0.04] sm:grid-cols-2 sm:p-8 [clip-path:polygon(18px_0,100%_0,100%_calc(100%-18px),calc(100%-18px)_100%,0_100%,0_18px)]"
+      className="border-border bg-background grid gap-4 border p-6 shadow-2xl shadow-black/[0.04] [clip-path:polygon(18px_0,100%_0,100%_calc(100%-18px),calc(100%-18px)_100%,0_100%,0_18px)] sm:grid-cols-2 sm:p-8"
     >
       <FormFields
         blocks={visibleBlocks}

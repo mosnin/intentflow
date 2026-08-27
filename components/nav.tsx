@@ -126,9 +126,9 @@ export function Nav(): ReactNode {
           ? { duration: 0.01 }
           : { duration: 0.6, ease: softEase }
       }
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+      className={`site-material fixed inset-x-0 top-0 z-50 transition-[background-color,border-color,box-shadow] duration-300 ${
         scrolled || mobileOpen
-          ? "border-border/50 bg-background border-b"
+          ? "border-border/70 bg-background/82 supports-[backdrop-filter]:bg-background/74 border-b shadow-[0_1px_14px_rgba(0,0,0,0.035)] backdrop-blur-xl"
           : "border-b border-transparent bg-transparent"
       }`}
     >
@@ -151,7 +151,7 @@ export function Nav(): ReactNode {
                   setProductsOpen((value) => !value);
                 }}
                 aria-expanded={productsOpen}
-                className={`focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                className={`focus-ring active:bg-muted inline-flex min-h-11 items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
                   productsOpen
                     ? "text-accent"
                     : "text-foreground/80 hover:text-foreground"
@@ -247,7 +247,7 @@ export function Nav(): ReactNode {
                   setIndustriesOpen((value) => !value);
                 }}
                 aria-expanded={industriesOpen}
-                className={`focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                className={`focus-ring active:bg-muted inline-flex min-h-11 items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
                   industriesOpen
                     ? "text-accent"
                     : "text-foreground/80 hover:text-foreground"
@@ -269,14 +269,14 @@ export function Nav(): ReactNode {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 8 }}
                     transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
-                    className="absolute left-3 top-full pt-3"
+                    className="absolute top-full left-3 pt-3"
                   >
-                    <div className="grid max-h-[calc(100vh-92px)] w-[660px] grid-cols-2 gap-px overflow-y-auto rounded-md border border-border bg-border shadow-2xl shadow-black/10">
+                    <div className="border-border bg-border grid max-h-[calc(100vh-92px)] w-[660px] grid-cols-2 gap-px overflow-y-auto rounded-md border shadow-2xl shadow-black/10">
                       {industryProfiles.map((industry, index) => (
                         <a
                           key={industry.route}
                           href={industry.route}
-                          className={`focus-ring group flex min-h-[74px] items-start justify-between gap-4 bg-background p-4 transition-colors hover:bg-muted ${
+                          className={`focus-ring group bg-background hover:bg-muted flex min-h-[74px] items-start justify-between gap-4 p-4 transition-colors ${
                             index === industryProfiles.length - 1 &&
                             industryProfiles.length % 2 === 1
                               ? "col-span-2"
@@ -287,12 +287,12 @@ export function Nav(): ReactNode {
                             <span className="text-[13px] font-medium tracking-tight">
                               {industry.name}
                             </span>
-                            <span className="mt-1 text-xs leading-snug text-muted-foreground">
+                            <span className="text-muted-foreground mt-1 text-xs leading-snug">
                               {industry.description}
                             </span>
                           </span>
                           <ArrowUpRight
-                            className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground transition-colors group-hover:text-[#b8500c]"
+                            className="text-muted-foreground mt-0.5 h-4 w-4 shrink-0 transition-colors group-hover:text-[#b8500c]"
                             strokeWidth={1.5}
                             aria-hidden="true"
                           />

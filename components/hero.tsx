@@ -1,7 +1,12 @@
 "use client";
 
 import { CutButton } from "@/components/cut-button";
-import { fadeInUp, reducedMotionVariants, softEase, useReducedMotion } from "@/lib/motion";
+import {
+  fadeInUp,
+  reducedMotionVariants,
+  softEase,
+  useReducedMotion,
+} from "@/lib/motion";
 import { motion, type Variants } from "motion/react";
 import type { ReactNode } from "react";
 
@@ -35,11 +40,11 @@ export function Hero(): ReactNode {
           variants={container}
           initial="hidden"
           animate="visible"
-          className="relative mx-auto flex max-w-2xl flex-col items-center pb-12 pt-32 text-center sm:pt-40"
+          className="relative mx-auto flex max-w-2xl flex-col items-center pt-32 pb-12 text-center sm:pt-40"
         >
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute left-1/2 top-1/2 -z-[1] h-[150%] w-[160%] -translate-x-1/2 -translate-y-1/2"
+            className="pointer-events-none absolute top-1/2 left-1/2 -z-[1] h-[150%] w-[160%] -translate-x-1/2 -translate-y-1/2"
             style={{
               background:
                 "radial-gradient(ellipse at center, var(--background) 0%, color-mix(in srgb, var(--background) 78%, transparent) 45%, transparent 72%)",
@@ -49,7 +54,7 @@ export function Hero(): ReactNode {
           <motion.p
             variants={item}
             transition={itemTransition}
-            className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#b8500c]"
+            className="mb-5 font-mono text-[11px] font-medium tracking-[0.14em] text-[#b8500c] uppercase"
           >
             A Search Dominance Company
           </motion.p>
@@ -57,7 +62,7 @@ export function Hero(): ReactNode {
           <motion.h1
             variants={item}
             transition={itemTransition}
-            className="text-balance font-serif text-4xl font-normal leading-[1.1] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]"
+            className="font-serif text-[2.6rem] leading-[1.04] font-normal tracking-[-0.025em] text-balance sm:text-5xl lg:text-[3.75rem]"
           >
             Engineer the search.{" "}
             <span className="font-sans font-medium tracking-tight">
@@ -68,7 +73,7 @@ export function Hero(): ReactNode {
           <motion.p
             variants={item}
             transition={itemTransition}
-            className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-base"
+            className="text-muted-foreground mt-5 max-w-2xl text-base leading-7 text-balance sm:text-[1.05rem] sm:leading-8"
           >
             Buyers no longer search in one place. They discover, evaluate, and
             decide across Google, Bing, and AI answer engines — ChatGPT, Gemini,
