@@ -17,23 +17,23 @@ type Testimonial = {
 const TESTIMONIALS: Testimonial[] = [
   {
     quote:
-      "The flexibility is really what made the difference. Our threat surface shifts weekly — I surface a new gap and in two clicks Sentinel already has it covered. That is a real advantage when you are moving quickly.",
-    name: "Olivier Reinaud",
-    role: "Co-founder at NetZero",
+      "1,785 high-intent clicks in 27 days. 22 OSA placements. 1,548 Google clicks. 237 Bing clicks. 70.83% peak query CTR.",
+    name: "Personal Injury & Criminal Defense Law",
+    role: "Multi-location law firm · Louisiana / Mississippi",
     image: "/testimonials/person-1.jpg",
   },
   {
     quote:
-      "We cut mean time to detect from hours to seconds. Instead of drowning my analysts in alerts, Sentinel hands them the one correlated signal that actually matters — every single time.",
-    name: "Priya Anand",
-    role: "CISO at Halcyon Bank",
+      "1,025 high-intent clicks in 27 days. 14 OSA placements. 701 Google clicks. 324 Bing clicks. 70.33% peak query CTR.",
+    name: "HVAC Services",
+    role: "Regional contractor · Corpus Christi, TX",
     image: "/testimonials/person-2.jpg",
   },
   {
     quote:
-      "Consolidating six tools into one platform paid for itself in a quarter. The audit trail alone turned a two-week compliance scramble into an afternoon. Nothing slips through anymore.",
-    name: "Marcus Webb",
-    role: "Head of Security at Arc Logistics",
+      "553 high-intent clicks in 27 days. 11 OSA placements. 174 Google clicks. 379 Bing clicks. 79.69% peak query CTR.",
+    name: "Concrete & Masonry",
+    role: "Specialty trades · Sydney, Australia",
     image: "/testimonials/person-3.jpg",
   },
 ];
@@ -78,7 +78,7 @@ export function Testimonials(): ReactNode {
         <div className="relative flex flex-col lg:border-l lg:border-border lg:pl-12">
           <CornerPlus className="left-0 top-0 hidden -translate-x-1/2 -translate-y-1/2 lg:block" />
           <CornerPlus className="bottom-0 left-0 hidden -translate-x-1/2 translate-y-1/2 lg:block" />
-          <Kicker>Real reviews from real customers</Kicker>
+          <Kicker>Verified performance</Kicker>
 
           <div className="mt-6 flex-1">
             <AnimatePresence mode="wait">

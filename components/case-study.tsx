@@ -1,26 +1,14 @@
 import { CornerPlus } from "@/components/corner-plus";
 import { CutButton } from "@/components/cut-button";
-import type { CSSProperties, ReactNode } from "react";
-
-const BRAND = { slug: "spotify_wordmark", name: "Spotify", ratio: 73 / 22 };
+import type { ReactNode } from "react";
 
 function InlineWordmark(): ReactNode {
-  const mask = `url(/logos/${BRAND.slug}.svg) center / contain no-repeat`;
   return (
     <span
-      role="img"
-      aria-label={BRAND.name}
-      style={
-        {
-          height: "0.78em",
-          width: `${(0.78 * BRAND.ratio).toFixed(3)}em`,
-          verticalAlign: "-0.02em",
-          mask,
-          WebkitMask: mask,
-        } as CSSProperties
-      }
-      className="mr-[0.34em] inline-block bg-foreground align-middle"
-    />
+      className="mr-[0.28em] inline-block align-baseline font-sans font-semibold tracking-tight text-[#b8500c]"
+    >
+      IntentFlow
+    </span>
   );
 }
 
@@ -37,8 +25,9 @@ export function CaseStudy(): ReactNode {
           <div className="px-6 py-10 sm:px-10 sm:py-14 lg:px-14 lg:py-16">
             <h2 className="text-balance font-serif text-[1.75rem] font-normal leading-[1.22] tracking-[-0.01em] sm:text-4xl lg:text-[2.5rem] lg:leading-[1.2]">
               <InlineWordmark />
-              unified every security signal across cloud, endpoint, and identity
-              — giving each team one provable source of truth.
+              has fourteen anonymized campaigns across fourteen verticals —
+              clicks, placements, and the engineered queries behind each, every
+              figure sourced from native Search Console and Webmaster Tools.
             </h2>
           </div>
 
@@ -46,16 +35,16 @@ export function CaseStudy(): ReactNode {
             <CornerPlus className="left-0 top-0 hidden -translate-x-1/2 -translate-y-1/2 lg:block" />
             <CornerPlus className="bottom-0 left-0 hidden -translate-x-1/2 translate-y-1/2 lg:block" />
             <p className="text-sm leading-relaxed text-muted-foreground sm:text-base">
-              Spotify replaced six disconnected tools with Sentinel, wiring
-              detection, response, and audit into a single governed pipeline —
-              and cut mean time to respond by 10×.
+              Figures reflect a sample of campaigns over one measurement window
+              and are not a guarantee of the results any particular business
+              will achieve.
             </p>
             <CutButton
-              href="#case-study"
+              href="/case-studies"
               variant="outline"
               className="self-start"
             >
-              Read the case study
+              View all fourteen case studies
             </CutButton>
           </div>
         </div>

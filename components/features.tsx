@@ -16,24 +16,24 @@ type Feature = {
 const FEATURES: Feature[] = [
   {
     shape: "scan",
-    title: "Unified signal, zero noise",
-    body: "Every alert, log, and identity event flows into one correlated graph — so your team chases real threats instead of triaging dashboards.",
-    meta: "Detection · Sentinel Core",
-    href: "#detection",
+    title: "Search Engine Optimization",
+    body: "The traditional discipline. Optimizing websites and content to rank in Google and Bing blue-link results. Still foundational. Ranking is no longer the destination — it's the down payment that earns the right to compete for everything else.",
+    meta: "SEO · The traditional discipline",
+    href: "/osa",
   },
   {
     shape: "shield",
-    title: "Response in milliseconds",
-    body: "Automated playbooks isolate compromised hosts and revoke access the instant a pattern matches, long before an analyst opens a ticket.",
-    meta: "Response · Sentinel Flow",
-    href: "#response",
+    title: "Answer Engine Optimization",
+    body: "The newer discipline addressing a hard truth: 69% of Google searches now end without a click. Buyers form opinions inside featured snippets, AI Overviews, voice responses, and \"People Also Ask\" boxes. AEO is the practice of being the answer wherever buyers are looking.",
+    meta: "AEO · The newer discipline",
+    href: "/authority",
   },
   {
     shape: "key",
-    title: "Provable, sealed control",
-    body: "Hardware-backed keys and immutable audit trails keep every action accountable, encrypted end to end and ready for any auditor.",
-    meta: "Governance · Sentinel Vault",
-    href: "#governance",
+    title: "Generative Engine Optimization",
+    body: "The frontier discipline. When buyers ask ChatGPT, Gemini, Perplexity, Claude, or Grok to recommend vendors, the AI cites three to five sources. GEO is the practice of engineering content to be one of those sources — where the next generation of buying decisions is being shaped.",
+    meta: "GEO · The frontier discipline",
+    href: "/authority",
   },
 ];
 
@@ -47,17 +47,17 @@ export function Features(): ReactNode {
     <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 sm:pb-32 lg:px-10">
       <div className="max-w-2xl">
         <h2 className="text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
-          One platform that{" "}
-          <span className="font-sans font-semibold tracking-tight">sees</span>,{" "}
-          <span className="font-sans font-semibold tracking-tight">stops</span>,
-          and{" "}
-          <span className="font-sans font-semibold tracking-tight">seals</span>{" "}
-          every threat
+          Three search disciplines. {" "}
+          <span className="font-sans font-semibold tracking-tight">
+            One stack.
+          </span>
         </h2>
         <p className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-          Sentinel collapses your entire security stack into a single system of
-          record — built to detect, respond, and prove control without the
-          integration tax.
+          Search no longer happens in one place. It happens across three
+          distinct disciplines, each reaching the buyer at a different moment.
+          Most companies treat them as alternatives. They&apos;re not alternatives
+          — they&apos;re three layers of one stack. Winning requires presence across
+          all three.
         </p>
       </div>
 

@@ -48,17 +48,18 @@ function DuotoneImage({ src }: { src: string }): ReactNode {
 function Heading(): ReactNode {
   return (
     <h2 className="mx-auto max-w-4xl text-balance font-serif text-4xl font-normal leading-[1.08] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]">
-      Total{" "}
-      <span className="font-sans font-semibold tracking-tight">visibility</span>{" "}
-      across your entire infrastructure
+      We don&apos;t optimize for search. {" "}
+      <span className="font-sans font-semibold tracking-tight">
+        We engineer it.
+      </span>
     </h2>
   );
 }
 
 function CallToAction(): ReactNode {
   return (
-    <CutButton href="#platform" className="mt-8">
-      Explore the platform
+    <CutButton href="/discovery-call" className="mt-8">
+      See what search dominance actually looks like
       <ArrowRight className="h-4 w-4" aria-hidden="true" />
     </CutButton>
   );

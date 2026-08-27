@@ -7,11 +7,10 @@ import {
   useEffect,
   useRef,
   useState,
-  type CSSProperties,
   type ReactNode,
 } from "react";
 
-type Brand = { slug: string; name: string; width: number; height: number };
+type Brand = { name: string };
 
 type Stat = {
   value: number;
@@ -23,42 +22,31 @@ type Stat = {
 
 const STATS: Stat[] = [
   {
-    value: 97,
-    suffix: "%",
-    label: "Reduction in alert noise",
-    brand: { slug: "stripe_wordmark", name: "Stripe", width: 62, height: 26 },
+    value: 8432,
+    label: "high-intent clicks in this snapshot",
+    brand: { name: "Google Search Console" },
   },
   {
-    value: 6,
-    label: "Tools replaced by one platform",
-    brand: { slug: "dropbox_wordmark", name: "Dropbox", width: 104, height: 28 },
+    value: 179,
+    label: "autocomplete placements engineered",
+    brand: { name: "Bing Webmaster Tools" },
   },
   {
-    value: 10,
-    suffix: "x",
-    label: "Faster mean time to respond",
-    brand: { slug: "vercel_wordmark", name: "Vercel", width: 92, height: 18 },
+    value: 14,
+    label: "verticals, one mechanism",
+    brand: { name: "27 days of source-verified data" },
   },
 ];
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 function StatBrand({ brand }: { brand: Brand }): ReactNode {
-  const mask = `url(/logos/${brand.slug}.svg) center / contain no-repeat`;
   return (
     <span
-      role="img"
-      aria-label={brand.name}
-      style={
-        {
-          width: brand.width,
-          height: brand.height,
-          mask,
-          WebkitMask: mask,
-        } as CSSProperties
-      }
-      className="block shrink-0 bg-foreground opacity-50"
-    />
+      className="block max-w-32 shrink-0 text-right font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground"
+    >
+      {brand.name}
+    </span>
   );
 }
 
@@ -96,8 +84,8 @@ function StatNumber({
 
   return (
     <span className="block font-serif text-5xl font-normal leading-none tracking-[-0.02em] tabular-nums sm:text-6xl">
-      <span aria-hidden="true">{`${prefix}${Math.round(display)}${suffix}`}</span>
-      <span className="sr-only">{`${prefix}${value}${suffix}`}</span>
+      <span aria-hidden="true">{`${prefix}${Math.round(display).toLocaleString("en-US")}${suffix}`}</span>
+      <span className="sr-only">{`${prefix}${value.toLocaleString("en-US")}${suffix}`}</span>
     </span>
   );
 }
@@ -115,15 +103,17 @@ export function Stats(): ReactNode {
       <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
         <div className="lg:pt-6">
           <h2 className="text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
-            Real outcomes from teams running{" "}
+            A snapshot from the {" "}
             <span className="font-sans font-semibold tracking-tight">
-              Sentinel
+              case-study library.
             </span>
           </h2>
           <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground sm:text-base">
-            From faster detection to a leaner stack, security leaders cut the
-            noise and consolidate tooling the moment Sentinel goes live — with
-            full governance from day one.
+            The numbers are a single 27-day slice of fourteen campaigns drawn
+            from our case studies — not a monthly ceiling and not our full book
+            of work. Every figure is sourced from Google Search Console and Bing
+            Webmaster Tools, the same dashboards our clients log into
+            themselves.
           </p>
         </div>
 

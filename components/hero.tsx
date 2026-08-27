@@ -46,14 +46,22 @@ export function Hero(): ReactNode {
             }}
           />
 
+          <motion.p
+            variants={item}
+            transition={itemTransition}
+            className="mb-5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#b8500c]"
+          >
+            A Search Dominance Company
+          </motion.p>
+
           <motion.h1
             variants={item}
             transition={itemTransition}
             className="text-balance font-serif text-4xl font-normal leading-[1.1] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]"
           >
-            Secure your Enterprise Stack{" "}
+            Engineer the search.{" "}
             <span className="font-sans font-medium tracking-tight">
-              at AI Speed
+              Own the answer.
             </span>
           </motion.h1>
 
@@ -62,21 +70,23 @@ export function Hero(): ReactNode {
             transition={itemTransition}
             className="mt-4 max-w-xl text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-base"
           >
-            Sentinel gives security teams the building blocks for a unified
-            platform that meets complex compliance needs and adapts as fast as
-            threats evolve.
+            Buyers no longer search in one place. They discover, evaluate, and
+            decide across Google, Bing, and AI answer engines — ChatGPT, Gemini,
+            Perplexity, Claude, Grok, Copilot. IntentFlow engineers your brand
+            into the two moments that decide outcomes: when buyers start typing,
+            and when AI generates the answer. The middle takes care of itself.
           </motion.p>
 
           <motion.div
             variants={item}
             transition={itemTransition}
-            className="mt-7 flex items-center justify-center gap-3"
+            className="mt-7 flex flex-col items-center justify-center gap-3 sm:flex-row"
           >
-            <CutButton variant="solid" href="#get-started">
-              Get Started
+            <CutButton variant="solid" href="/discovery-call">
+              Book a Discovery Call
             </CutButton>
-            <CutButton variant="outline" href="#talk-to-us">
-              Talk to Us
+            <CutButton variant="outline" href="/assessment">
+              Get a free AI visibility assessment
             </CutButton>
           </motion.div>
         </motion.div>

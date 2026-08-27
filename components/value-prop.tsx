@@ -9,12 +9,12 @@ import type { ReactNode } from "react";
 
 const PROBLEMS: { title: string; body: string }[] = [
   {
-    title: "Alert Fatigue",
-    body: "Disconnected tools flood your team with noise, burying the signals that actually matter.",
+    title: "The funnel fragmented",
+    body: "Buyers now form opinions on TikTok, validate on Reddit, comparison-shop in Perplexity, and ask ChatGPT to recommend vendors before they ever type a brand name into a traditional search bar.",
   },
   {
-    title: "The Coverage Gap",
-    body: "Every new vendor adds another blind spot, and stitching them together is a long-term burden.",
+    title: "The strategy didn't",
+    body: "Google still matters enormously. Google alone is no longer enough. Most companies haven't adapted. Their search marketing strategies are still optimized for a funnel that no longer reflects how buying actually happens.",
   },
 ];
 
@@ -31,23 +31,19 @@ export function ValueProp(): ReactNode {
         >
           <CurtainImage
             src="/value-prop.jpg"
-            alt="Fragmented security tooling"
+            alt="The fragmented modern search journey"
             className={`absolute inset-0 h-full w-full ${DUOTONE_BASE}`}
           />
           <DuotoneOverlay />
         </div>
 
         <div className="lg:order-1">
-          <Kicker>The challenge</Kicker>
+          <Kicker>The strategic context</Kicker>
           <h2 className="mt-5 max-w-2xl text-balance font-serif text-3xl font-normal leading-[1.12] tracking-[-0.01em] sm:text-4xl lg:text-[2.75rem]">
-            A unified platform gives your team an edge,{" "}
+            The Google-only funnel {" "}
             <span className="font-sans font-semibold tracking-tight">
-              but stitching tools
+              is dead.
             </span>{" "}
-            together comes with{" "}
-            <span className="font-sans font-semibold tracking-tight">
-              tradeoffs
-            </span>
           </h2>
 
           <dl className="mt-10">

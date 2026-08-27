@@ -106,7 +106,7 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="text-balance font-serif text-4xl font-normal leading-[1.08] tracking-[-0.01em] sm:text-5xl lg:text-[3.75rem]"
           >
-            Take control of every threat across your org
+            Two intercepts. One unfair advantage.
           </motion.h2>
 
           <motion.p
@@ -114,8 +114,9 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="mt-5 max-w-md text-balance text-[15px] leading-relaxed text-muted-foreground sm:text-base"
           >
-            Unify detection, response, and governance on one platform — and give
-            your team a single line of sight from day one.
+            See what search dominance actually looks like for your business —
+            in your vertical, against your competitors, with your specific
+            economics.
           </motion.p>
 
           <motion.div
@@ -123,11 +124,11 @@ export function FinalCta(): ReactNode {
             transition={itemTransition}
             className="mt-8 flex flex-wrap items-center justify-center gap-3"
           >
-            <CutButton variant="solid" href="#get-started">
-              Get started
+            <CutButton variant="solid" href="/discovery-call">
+              Book a discovery call
             </CutButton>
-            <CutButton variant="outline" href="#demo">
-              Book a demo
+            <CutButton variant="outline" href="/assessment">
+              Free AI visibility assessment
             </CutButton>
           </motion.div>
         </motion.div>

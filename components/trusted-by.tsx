@@ -1,14 +1,14 @@
 import { UsersRound } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import type { ReactNode } from "react";
 
-type Brand = { slug: string; name: string; width: number; height: number };
+type Brand = { name: string };
 
 const BRANDS: Brand[] = [
-  { slug: "stripe_wordmark", name: "Stripe", width: 53, height: 22 },
-  { slug: "dropbox_wordmark", name: "Dropbox", width: 96, height: 26 },
-  { slug: "spotify_wordmark", name: "Spotify", width: 73, height: 22 },
-  { slug: "anthropic_black_wordmark", name: "Anthropic", width: 99, height: 13 },
-  { slug: "vercel_wordmark", name: "Vercel", width: 86, height: 17 },
+  { name: "Google" },
+  { name: "Bing" },
+  { name: "ChatGPT" },
+  { name: "Gemini" },
+  { name: "Perplexity" },
 ];
 
 function CornerPlus({ className }: { className: string }): ReactNode {
@@ -29,21 +29,14 @@ function CornerPlus({ className }: { className: string }): ReactNode {
 }
 
 function BrandLogo({ brand }: { brand: Brand }): ReactNode {
-  const mask = `url(/logos/${brand.slug}.svg) center / contain no-repeat`;
   return (
     <span
       role="img"
       aria-label={brand.name}
-      style={
-        {
-          width: brand.width,
-          height: brand.height,
-          mask,
-          WebkitMask: mask,
-        } as CSSProperties
-      }
-      className="block bg-foreground opacity-60 transition-opacity duration-200 hover:opacity-100"
-    />
+      className="block font-serif text-lg text-foreground/60 transition-opacity duration-200 hover:text-foreground"
+    >
+      {brand.name}
+    </span>
   );
 }
 
@@ -60,19 +53,19 @@ export function TrustedBy(): ReactNode {
           {/* Label */}
           <div className="flex shrink-0 items-center justify-center border-b border-border px-6 py-5 md:border-b-0 md:border-r md:py-7">
             <span className="text-xs font-medium text-muted-foreground">
-              Protecting industry leaders
+              Search no longer happens in one place.
             </span>
           </div>
 
           <div className="flex flex-1 flex-wrap items-center justify-evenly gap-x-8 gap-y-6 px-8 py-7">
             {BRANDS.map((brand) => (
-              <BrandLogo key={brand.slug} brand={brand} />
+              <BrandLogo key={brand.name} brand={brand} />
             ))}
           </div>
 
           <div className="flex shrink-0 items-center justify-center gap-2 border-t border-border px-6 py-5 text-muted-foreground md:border-l md:border-t-0 md:py-7">
             <UsersRound className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-            <span className="text-xs font-medium">And 10,000+ more</span>
+            <span className="text-xs font-medium">Claude · Grok · Copilot</span>
           </div>
         </div>
       </div>

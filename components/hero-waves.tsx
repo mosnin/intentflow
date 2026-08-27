@@ -22,9 +22,9 @@ export function HeroWaves(): ReactNode {
 
   if (!mounted) return null;
 
-  const color = "#b8500c";
+  const color = resolvedTheme === "dark" ? "#ffffff" : "#0a0a0a";
   const isDark = resolvedTheme === "dark";
-  const targetOpacity = isDark ? 0.7 : 0.5;
+  const targetOpacity = isDark ? 1 : 0.85;
   const fade =
     "linear-gradient(to bottom, transparent 0%, black 25%, black 80%, transparent 100%)";
 
@@ -42,12 +42,14 @@ export function HeroWaves(): ReactNode {
       style={{
         maskImage: fade,
         WebkitMaskImage: fade,
+        filter: isDark ? undefined : "saturate(2.4) contrast(1.25)",
       }}
     >
       <AsciiWaves
         color={color}
-        intensity={0.72}
+        intensity={0}
         elementSize={10}
+        videoUrl="/sample-video-2.mp4"
         noiseScale={25}
         hasCursorInteraction={true}
         className="opacity-50 dark:opacity-60"

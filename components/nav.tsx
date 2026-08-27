@@ -2,148 +2,245 @@
 
 import { CutButton } from "@/components/cut-button";
 import { Logo } from "@/components/logo";
-import { ChevronDown, Menu, X } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useEffect, useState, type ReactNode } from "react";
+import { NavVisual } from "@/components/nav-visual";
+import { softEase, useReducedMotion } from "@/lib/motion";
+import {
+  BadgeCheck,
+  ChevronDown,
+  Cloud,
+  Menu,
+  MonitorSmartphone,
+  Radar,
+  X,
+  type LucideIcon,
+} from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-const PRODUCTS = [
-  { label: "IntentFlow OSA", href: "/osa", detail: "Own autocomplete" },
+type PlatformItem = {
+  title: string;
+  desc: string;
+  href: string;
+  icon: LucideIcon;
+  featureTitle: string;
+  featureDesc: string;
+};
+
+const PLATFORM_ITEMS: PlatformItem[] = [
   {
-    label: "IntentFlow Authority",
+    title: "IntentFlow OSA",
+    desc: "Own the most valuable position in search.",
+    href: "/osa",
+    icon: Radar,
+    featureTitle: "Own the most valuable position in search.",
+    featureDesc:
+      "Position your brand where customer intent forms — inside Google and Bing's autocomplete suggestions.",
+  },
+  {
+    title: "IntentFlow Authority",
+    desc: "Get found in AI search.",
     href: "/authority",
-    detail: "Earn AI citations",
+    icon: MonitorSmartphone,
+    featureTitle: "Get found in AI search.",
+    featureDesc:
+      "Get your clients found in AI search — ChatGPT, Claude, Perplexity, Gemini, Copilot, Grok, and more.",
   },
   {
-    label: "Intelligent Traffic",
+    title: "Intelligent Traffic",
+    desc: "Two engines. One compounding loop.",
     href: "/intelligent-traffic",
-    detail: "Run both as one engine",
+    icon: Cloud,
+    featureTitle: "Two engines. One compounding loop.",
+    featureDesc:
+      "IntentFlow OSA and Authority engineer presence across all three layers simultaneously. One operational engine.",
   },
-] as const;
+  {
+    title: "Case Studies",
+    desc: "Fourteen verticals. Fourteen wins.",
+    href: "/case-studies",
+    icon: BadgeCheck,
+    featureTitle: "A snapshot from the case-study library.",
+    featureDesc:
+      "Fourteen anonymized campaigns across fourteen verticals — every figure sourced from native Search Console and Webmaster Tools.",
+  },
+];
 
-const INDUSTRIES = [
-  ["Healthcare & Wellness", "/verticals/healthcare-wellness"],
-  ["Home Services", "/verticals/home-services"],
-  ["Hospitality", "/verticals/hospitality"],
-  ["Insurance", "/verticals/insurance"],
-  ["Legal", "/verticals/personal-injury-law"],
-  ["Medical Devices", "/verticals/medical-devices"],
-  ["Medical Services", "/verticals/medical-services"],
-  ["Professional Services", "/verticals/professional-services"],
-  ["SaaS", "/verticals/saas"],
-] as const;
+const SIMPLE_LINKS = [
+  { label: "Case Studies", href: "/case-studies" },
+  { label: "About", href: "/about/intentflow" },
+];
 
-function Dropdown({
-  label,
-  children,
-}: {
-  label: string;
-  children: ReactNode;
-}): ReactNode {
-  const [open, setOpen] = useState(false);
-
-  return (
-    <div
-      className="relative"
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-    >
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        className="focus-ring text-foreground/75 hover:text-foreground flex items-center gap-1 rounded px-3 py-2 text-[13px] font-medium transition-colors"
-        aria-expanded={open}
-      >
-        {label}
-        <ChevronDown
-          className={`h-3.5 w-3.5 transition-transform ${open ? "rotate-180" : ""}`}
-          aria-hidden="true"
-        />
-      </button>
-      {open ? (
-        <div className="absolute top-full left-0 pt-3">
-          <div className="border-border bg-background grid min-w-64 gap-1 border p-2 shadow-2xl shadow-black/10 [clip-path:polygon(10px_0,100%_0,100%_calc(100%-10px),calc(100%-10px)_100%,0_100%,0_10px)]">
-            {children}
-          </div>
-        </div>
-      ) : null}
-    </div>
-  );
+function useScrolled(threshold = 8): boolean {
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const onScroll = (): void => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [threshold]);
+  return scrolled;
 }
 
 export function Nav(): ReactNode {
-  const pathname = usePathname();
+  const scrolled = useScrolled();
+  const prefersReducedMotion = useReducedMotion();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeItem, setActiveItem] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [mobilePlatformOpen, setMobilePlatformOpen] = useState(false);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openMenu = (): void => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setMenuOpen(true);
+  };
+  const scheduleClose = (): void => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    closeTimer.current = setTimeout(() => setMenuOpen(false), 120);
+  };
 
   useEffect(() => {
-    const update = (): void => setScrolled(window.scrollY > 8);
-    update();
-    window.addEventListener("scroll", update, { passive: true });
-    return () => window.removeEventListener("scroll", update);
+    const onKey = (e: KeyboardEvent): void => {
+      if (e.key === "Escape") {
+        setMenuOpen(false);
+        setMobileOpen(false);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
   }, []);
 
-  const linkClass = (href: string): string =>
-    `focus-ring rounded px-3 py-2 text-[13px] font-medium transition-colors ${
-      pathname === href
-        ? "text-foreground"
-        : "text-foreground/75 hover:text-foreground"
-    }`;
+  const active = PLATFORM_ITEMS[activeItem] ?? PLATFORM_ITEMS[0];
+  if (!active) return null;
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 border-b transition-colors duration-300 ${
+    <motion.header
+      initial={{ opacity: 0, y: -16 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={
+        prefersReducedMotion
+          ? { duration: 0.01 }
+          : { duration: 0.6, ease: softEase }
+      }
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
         scrolled || mobileOpen
-          ? "border-border/80 bg-background/95 backdrop-blur-xl"
-          : "bg-background/70 border-transparent backdrop-blur-md"
+          ? "border-border/50 bg-background border-b"
+          : "border-b border-transparent bg-transparent"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-[1440px] items-center justify-between px-5 sm:px-8 lg:px-10">
-        <div className="flex items-center gap-7">
+        {/* Left: logo + desktop links */}
+        <div className="flex items-center gap-8">
           <Logo />
-          <nav className="hidden items-center lg:flex" aria-label="Primary">
-            <Dropdown label="Products">
-              {PRODUCTS.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="focus-ring hover:bg-muted group grid rounded px-3 py-2.5 transition-colors"
-                >
-                  <span className="text-[13px] font-semibold">
-                    {item.label}
-                  </span>
-                  <span className="text-muted-foreground text-xs">
-                    {item.detail}
-                  </span>
-                </Link>
-              ))}
-            </Dropdown>
-            <Dropdown label="Industries">
-              <div className="grid w-[440px] grid-cols-2 gap-1">
-                {INDUSTRIES.map(([label, href]) => (
-                  <Link
-                    key={href}
-                    href={href}
-                    className="focus-ring hover:bg-muted rounded px-3 py-2.5 text-[13px] font-medium transition-colors"
-                  >
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            </Dropdown>
-            <Link href="/case-studies" className={linkClass("/case-studies")}>
-              Case studies
-            </Link>
-            <Link
-              href="/about/intentflow"
-              className={linkClass("/about/intentflow")}
+
+          <nav className="hidden items-center gap-1 lg:flex">
+            {/* Expandable */}
+            <div
+              className="relative"
+              onMouseEnter={openMenu}
+              onMouseLeave={scheduleClose}
             >
-              About
-            </Link>
+              <button
+                type="button"
+                onClick={() => setMenuOpen((v) => !v)}
+                aria-expanded={menuOpen}
+                className={`focus-ring inline-flex items-center gap-1 rounded-md px-3 py-2 text-[13px] font-medium transition-colors ${
+                  menuOpen
+                    ? "text-accent"
+                    : "text-foreground/80 hover:text-foreground"
+                }`}
+              >
+                Products
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    menuOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <AnimatePresence>
+                {menuOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 8 }}
+                    transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+                    className="absolute top-full left-3 pt-3"
+                  >
+                    <div className="border-border bg-background flex w-[600px] overflow-hidden rounded-md border shadow-2xl shadow-black/10">
+                      <div className="flex w-[268px] flex-col gap-0.5 p-2">
+                        {PLATFORM_ITEMS.map((item, i) => (
+                          <a
+                            key={item.href}
+                            href={item.href}
+                            onMouseEnter={() => setActiveItem(i)}
+                            onFocus={() => setActiveItem(i)}
+                            className="focus-ring group hover:bg-muted flex items-center gap-2.5 rounded p-2 transition-colors"
+                          >
+                            <span className="border-border bg-background text-muted-foreground group-hover:text-foreground flex h-7 w-7 shrink-0 items-center justify-center rounded-sm border transition-colors">
+                              <item.icon
+                                className="h-4 w-4"
+                                strokeWidth={1.5}
+                                aria-hidden="true"
+                              />
+                            </span>
+                            <span className="flex flex-col">
+                              <span className="text-[13px] font-medium tracking-tight">
+                                {item.title}
+                              </span>
+                              <span className="text-muted-foreground text-xs">
+                                {item.desc}
+                              </span>
+                            </span>
+                          </a>
+                        ))}
+                      </div>
+
+                      <div className="bg-border w-px self-stretch" />
+
+                      <div className="flex flex-1 flex-col p-3">
+                        <div className="relative min-h-0 w-full flex-1 overflow-hidden rounded">
+                          <NavVisual />
+                        </div>
+                        <div className="mt-3 h-16">
+                          <AnimatePresence mode="wait">
+                            <motion.div
+                              key={active.title}
+                              initial={{ opacity: 0, y: 6 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: -6 }}
+                              transition={{ duration: 0.2 }}
+                            >
+                              <p className="text-[13px] font-semibold tracking-tight">
+                                {active.featureTitle}
+                              </p>
+                              <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
+                                {active.featureDesc}
+                              </p>
+                            </motion.div>
+                          </AnimatePresence>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {SIMPLE_LINKS.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="focus-ring text-foreground/80 hover:text-foreground rounded-md px-3 py-2 text-[13px] font-medium transition-colors"
+              >
+                {link.label}
+              </a>
+            ))}
           </nav>
         </div>
 
-        <div className="hidden items-center gap-2.5 lg:flex">
+        <div className="hidden items-center gap-3 lg:flex">
           <CutButton variant="outline" href="/assessment">
             Free assessment
           </CutButton>
@@ -152,79 +249,106 @@ export function Nav(): ReactNode {
           </CutButton>
         </div>
 
-        <button
-          type="button"
-          className="focus-ring border-border flex h-10 w-10 items-center justify-center border lg:hidden"
-          onClick={() => setMobileOpen((value) => !value)}
-          aria-expanded={mobileOpen}
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-        >
-          {mobileOpen ? (
-            <X className="h-5 w-5" />
-          ) : (
-            <Menu className="h-5 w-5" />
-          )}
-        </button>
+        <div className="flex items-center gap-2.5 lg:hidden">
+          <CutButton variant="solid" href="/discovery-call">
+            Book a call
+          </CutButton>
+          <CutButton
+            variant="outline"
+            iconOnly
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            onClick={() => setMobileOpen((v) => !v)}
+          >
+            {mobileOpen ? (
+              <X className="h-5 w-5" aria-hidden="true" />
+            ) : (
+              <Menu className="h-5 w-5" aria-hidden="true" />
+            )}
+          </CutButton>
+        </div>
       </div>
 
-      {mobileOpen ? (
-        <nav className="border-border bg-background h-[calc(100dvh-4rem)] overflow-y-auto border-t px-5 pt-5 pb-10 lg:hidden">
-          <p className="text-muted-foreground px-2 font-mono text-[10px] tracking-[0.18em] uppercase">
-            Products
-          </p>
-          <div className="mt-2 grid">
-            {PRODUCTS.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="border-border border-b px-2 py-3 text-sm font-medium"
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.28, ease: [0.4, 0, 0.2, 1] }}
+            className="border-border/50 overflow-hidden border-t lg:hidden"
+          >
+            <div className="mx-auto max-w-[1440px] px-5 py-4 sm:px-8">
+              <button
+                type="button"
+                onClick={() => setMobilePlatformOpen((v) => !v)}
+                aria-expanded={mobilePlatformOpen}
+                className="focus-ring flex w-full items-center justify-between rounded-md px-2 py-3 text-sm font-medium"
               >
-                {item.label}
-              </Link>
-            ))}
-          </div>
-          <p className="text-muted-foreground mt-6 px-2 font-mono text-[10px] tracking-[0.18em] uppercase">
-            Industries
-          </p>
-          <div className="mt-2 grid grid-cols-2 gap-x-3">
-            {INDUSTRIES.map(([label, href]) => (
-              <Link
-                key={href}
-                href={href}
-                onClick={() => setMobileOpen(false)}
-                className="border-border border-b px-2 py-3 text-sm"
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-          <div className="mt-6 grid gap-3">
-            <Link
-              href="/case-studies"
-              onClick={() => setMobileOpen(false)}
-              className="px-2 py-2 text-sm font-medium"
-            >
-              Case studies
-            </Link>
-            <Link
-              href="/about/intentflow"
-              onClick={() => setMobileOpen(false)}
-              className="px-2 py-2 text-sm font-medium"
-            >
-              About IntentFlow
-            </Link>
-            <CutButton
-              variant="solid"
-              href="/discovery-call"
-              onClick={() => setMobileOpen(false)}
-              fullWidth
-            >
-              Book a discovery call
-            </CutButton>
-          </div>
-        </nav>
-      ) : null}
-    </header>
+                Products
+                <ChevronDown
+                  className={`h-4 w-4 transition-transform duration-300 ${
+                    mobilePlatformOpen ? "rotate-180" : ""
+                  }`}
+                  aria-hidden="true"
+                />
+              </button>
+
+              <AnimatePresence>
+                {mobilePlatformOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    transition={{ duration: 0.22 }}
+                    className="overflow-hidden"
+                  >
+                    <div className="flex flex-col gap-1 pb-2 pl-2">
+                      {PLATFORM_ITEMS.map((item) => (
+                        <a
+                          key={item.href}
+                          href={item.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="focus-ring hover:bg-muted flex items-center gap-3 rounded-md p-2.5"
+                        >
+                          <span className="border-border text-foreground flex h-8 w-8 shrink-0 items-center justify-center rounded-md border">
+                            <item.icon className="h-4 w-4" aria-hidden="true" />
+                          </span>
+                          <span className="flex flex-col">
+                            <span className="text-sm font-medium">
+                              {item.title}
+                            </span>
+                            <span className="text-muted-foreground text-xs">
+                              {item.desc}
+                            </span>
+                          </span>
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
+              {SIMPLE_LINKS.map((link) => (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="focus-ring block rounded-md px-2 py-3 text-sm font-medium"
+                >
+                  {link.label}
+                </a>
+              ))}
+
+              <div className="border-border/50 mt-3 border-t pt-4">
+                <CutButton variant="outline" href="/assessment" fullWidth>
+                  Free assessment
+                </CutButton>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

@@ -10,39 +10,29 @@ type QA = { question: string; answer: string };
 
 const FAQS: QA[] = [
   {
-    question: "What exactly is Sentinel?",
+    question: "What is a search dominance company?",
     answer:
-      "Sentinel is a unified security platform that collapses detection, response, and governance into one system of record. Every alert, log, and identity event flows into a single correlated graph, so your team acts on real threats instead of stitching together a dozen consoles.",
+      "A search dominance company engineers brand presence at the moments that decide buying outcomes across every place buyers search — including Google and Bing autocomplete, and AI answer engines like ChatGPT, Gemini, Perplexity, Claude, and Grok. The discipline operates upstream of traditional SEO, optimizing the search formation moment itself rather than competing for blue-link rankings after queries are formed.",
   },
   {
-    question: "Which environments and clouds does Sentinel cover?",
+    question: "What is generative engine optimization (GEO)?",
     answer:
-      "Sentinel runs across AWS, GCP, Azure, Kubernetes, and on-prem workloads from a single control plane. Agentless connectors cover most sources in minutes, while a lightweight collector handles anything that lives behind your firewall.",
+      "Generative Engine Optimization (GEO) is the discipline of engineering content to be cited by AI answer engines like ChatGPT, Gemini, Perplexity, Claude, and Grok. The term was coined in peer-reviewed research led from Princeton University and IIT Delhi, published at ACM KDD 2024. The study identified the three content signals that most drive AI citations: external citations, expert quotations, and verifiable statistics.",
   },
   {
-    question: "How does Sentinel handle data security and compliance?",
+    question: "How is IntentFlow different from SEO agencies and tools like SEMrush?",
     answer:
-      "Data is encrypted in transit and at rest with hardware-backed keys, and every action is written to an immutable audit trail. Sentinel is SOC 2 Type II and ISO 27001 certified, with regional data residency available for GDPR and HIPAA programs.",
+      "Traditional SEO operates downstream of search queries, competing for rankings in blue-link results. IntentFlow operates upstream, engineering presence in Google and Bing autocomplete (IntentFlow OSA) and in AI answer citations (IntentFlow Authority). Where SEMrush and similar tools diagnose problems and hand customers a to-do list, IntentFlow Authority closes the loop — generating fixes, fact-checking them across multiple AI models, and deploying them to the live site automatically.",
   },
   {
-    question: "How long does it take to deploy?",
+    question: "What does it mean that AI visibility is decoupled from Google rank?",
     answer:
-      "Most teams are ingesting signal on day one. Connect your first sources through the guided setup, and Sentinel begins correlating events immediately — no professional-services engagement or multi-quarter rollout required.",
+      "In the peer-reviewed GEO study (ACM KDD 2024), the top optimization method increased AI citation visibility by 115.1% for websites ranked fifth in traditional search results — while the average top-ranked site's visibility declined 30.3% when lower-ranked competitors optimized. AI engines select citations on different signals than Google's ranking algorithm, so a smaller, smarter competitor can become the most-cited brand in AI search even while losing the traditional SEO battle.",
   },
   {
-    question: "Will it integrate with our existing stack?",
+    question: "Who is IntentFlow built for?",
     answer:
-      "Yes. Sentinel ships with native integrations for the common SIEMs, identity providers, ticketing tools, and chat platforms, plus a full REST API and webhooks so you can wire automated playbooks into whatever you already run.",
-  },
-  {
-    question: "How is access controlled and audited?",
-    answer:
-      "Granular role-based access, SSO, and SCIM provisioning keep permissions tight, while every login and change is logged and exportable. Automated playbooks can revoke access the instant a risky pattern is detected.",
-  },
-  {
-    question: "Can Sentinel be self-hosted?",
-    answer:
-      "Teams with strict data-control requirements can run Sentinel entirely within their own VPC or private cloud. You keep full ownership of the data plane while still receiving managed updates to the detection engine.",
+      "IntentFlow is built for companies in high-AOV verticals already spending on paid search — law firms, home services contractors, wealth management practices, insurance agencies, medical devices and medical services companies, B2B SaaS in competitive markets, professional services firms, and high-end hospitality. The economics work for any business where the lifetime value of a customer justifies high-intent traffic acquisition and where the buying decision now happens partially through AI research.",
   },
 ];
 
@@ -151,15 +141,14 @@ export function Faq(): ReactNode {
         {/* Left: heading */}
         <div className="border-b border-border py-10 lg:border-b-0 lg:border-r lg:py-16 lg:pr-12">
           <h2 className="text-balance font-serif text-4xl font-normal leading-[1.05] tracking-[-0.01em] sm:text-5xl lg:text-[3.5rem]">
-            Frequently asked questions
+            Questions worth answering directly.
           </h2>
           <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground sm:text-base">
-            Everything you need to know about deploying Sentinel. Can&apos;t find
-            an answer? Our security team is one message away.
+            Frequently asked questions
           </p>
           <div className="mt-8">
-            <CutButton href="#contact" variant="outline">
-              Talk to our team
+            <CutButton href="/discovery-call" variant="outline">
+              Book a Discovery Call
             </CutButton>
           </div>
         </div>

@@ -3,62 +3,141 @@ import { Logo } from "@/components/logo";
 import Link from "next/link";
 import type { CSSProperties, ReactNode } from "react";
 
-const COLUMNS = [
+type FooterLink = { label: string; href: string };
+
+const COLUMNS: { title: string; links: FooterLink[] }[] = [
   {
-    title: "Products",
+    title: "Product",
     links: [
-      ["IntentFlow OSA", "/osa"],
-      ["IntentFlow Authority", "/authority"],
-      ["Intelligent Traffic", "/intelligent-traffic"],
+      { label: "IntentFlow OSA", href: "/osa" },
+      { label: "IntentFlow Authority", href: "/authority" },
+      { label: "Intelligent Traffic", href: "/intelligent-traffic" },
+      { label: "Case Studies", href: "/case-studies" },
     ],
   },
   {
     title: "Industries",
     links: [
-      ["Healthcare & Wellness", "/verticals/healthcare-wellness"],
-      ["Home Services", "/verticals/home-services"],
-      ["Hospitality", "/verticals/hospitality"],
-      ["Insurance", "/verticals/insurance"],
-      ["Legal", "/verticals/personal-injury-law"],
-      ["Medical Devices", "/verticals/medical-devices"],
-      ["Medical Services", "/verticals/medical-services"],
-      ["Professional Services", "/verticals/professional-services"],
-      ["SaaS", "/verticals/saas"],
+      { label: "Healthcare & Wellness", href: "/verticals/healthcare-wellness" },
+      { label: "Home Services", href: "/verticals/home-services" },
+      { label: "Hospitality", href: "/verticals/hospitality" },
+      { label: "View all industries", href: "/case-studies" },
     ],
   },
   {
     title: "Company",
     links: [
-      ["About IntentFlow", "/about/intentflow"],
-      ["Case Studies", "/case-studies"],
-      ["Contact", "/contact"],
-      ["Privacy", "/privacy"],
-      ["Terms", "/terms"],
+      { label: "About IntentFlow", href: "/about/intentflow" },
+      { label: "Contact", href: "/contact" },
+      { label: "Privacy Policy", href: "/privacy" },
+      { label: "Terms of Service", href: "/terms" },
     ],
   },
-] as const;
+];
 
 const PANEL_CLIP =
   "polygon(28px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%, 0 28px)";
+
+function Plus({ className }: { className: string }): ReactNode {
+  return (
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={`pointer-events-none absolute z-10 h-3.5 w-3.5 text-[#b8500c] ${className}`}
+    >
+      <path
+        d="M12 4v16M4 12h16"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function FooterColumn({
+  index,
+  title,
+  links,
+  children,
+}: {
+  index: number;
+  title: string;
+  links: FooterLink[];
+  children?: ReactNode;
+}): ReactNode {
+  const divided = index > 0;
+  return (
+    <div
+      className={`relative md:px-8 ${divided ? "md:border-l md:border-border" : "md:pl-0"} ${
+        index === 3 ? "md:pr-0" : ""
+      }`}
+    >
+      {divided && (
+        <>
+          <Plus className="left-0 top-0 hidden -translate-x-1/2 -translate-y-1/2 md:block" />
+          <Plus className="bottom-0 left-0 hidden -translate-x-1/2 translate-y-1/2 md:block" />
+        </>
+      )}
+
+      <h3 className="text-sm font-semibold tracking-tight">{title}</h3>
+      <ul className="mt-4 space-y-3">
+        {links.map((link) => (
+          <li key={link.href}>
+            {link.href.startsWith("/") ? (
+              <Link
+                href={link.href}
+                className="focus-ring text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </Link>
+            ) : (
+              <a
+                href={link.href}
+                className="focus-ring text-sm text-muted-foreground transition-colors hover:text-foreground"
+              >
+                {link.label}
+              </a>
+            )}
+          </li>
+        ))}
+      </ul>
+      {children}
+    </div>
+  );
+}
 
 export function Footer(): ReactNode {
   const clip = { clipPath: PANEL_CLIP } as CSSProperties;
 
   return (
-    <footer className="mx-auto max-w-[1440px] px-5 py-10 sm:px-8 lg:px-10">
+    <footer className="mx-auto max-w-[1440px] px-5 pb-10 sm:px-8 lg:px-10">
       <div className="bg-border p-px" style={clip}>
-        <div className="bg-background p-8 sm:p-10 lg:p-14" style={clip}>
-          <div className="grid gap-12 lg:grid-cols-[1.2fr_2fr]">
-            <div>
-              <Logo />
-              <p className="text-muted-foreground mt-5 max-w-sm text-sm leading-6">
-                A search dominance company. We engineer brand presence at the
-                moments that decide outcomes across every place buyers search.
-              </p>
-              <p className="text-muted-foreground mt-3 text-xs">
-                IntentFlow is a brand of The Osinoff Group, LLC.
-              </p>
-              <div className="mt-7 flex flex-wrap gap-2.5">
+        <div
+          className="bg-background p-8 sm:p-10 lg:p-14"
+          style={clip}
+        >
+          <Logo />
+
+          <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-10 md:mt-14 md:grid-cols-4 md:gap-x-0">
+            {COLUMNS.map((col, i) => (
+              <FooterColumn
+                key={col.title}
+                index={i}
+                title={col.title}
+                links={col.links}
+              />
+            ))}
+
+            <FooterColumn
+              index={3}
+              title="Connect"
+              links={[
+                { label: "+1 646-279-7307", href: "tel:+16462797307" },
+                { label: "greg@osinoffgrp.com", href: "mailto:greg@osinoffgrp.com" },
+              ]}
+            >
+              <div className="mt-6 flex flex-col items-start gap-2.5">
                 <CutButton variant="solid" href="/discovery-call">
                   Book a call
                 </CutButton>
@@ -66,45 +145,20 @@ export function Footer(): ReactNode {
                   Free assessment
                 </CutButton>
               </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-8 md:grid-cols-3">
-              {COLUMNS.map((column) => (
-                <div key={column.title}>
-                  <h2 className="text-sm font-semibold">{column.title}</h2>
-                  <ul className="mt-4 space-y-2.5">
-                    {column.links.map(([label, href]) => (
-                      <li key={href}>
-                        <Link
-                          href={href}
-                          className="text-muted-foreground hover:text-foreground focus-ring text-sm transition-colors"
-                        >
-                          {label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
+            </FooterColumn>
           </div>
 
-          <div className="border-border mt-12 flex flex-col gap-2 border-t pt-6 text-xs sm:flex-row sm:items-center sm:justify-between">
-            <p className="text-muted-foreground">
-              © 2026 The Osinoff Group, LLC. All rights reserved.
+          <div className="mt-12 flex flex-col-reverse items-start justify-between gap-6 pt-6 sm:flex-row sm:items-center md:mt-14">
+            <p className="text-xs text-muted-foreground">
+              © {new Date().getFullYear()} The Osinoff Group, LLC. All rights reserved.
             </p>
-            <p className="text-muted-foreground">
-              <a href="tel:+16462797307" className="hover:text-foreground">
-                +1 646-279-7307
-              </a>{" "}
-              ·{" "}
-              <a
-                href="mailto:greg@osinoffgrp.com"
-                className="hover:text-foreground"
-              >
-                greg@osinoffgrp.com
-              </a>
-            </p>
+
+            <Link
+              href="/contact"
+              className="focus-ring text-xs text-muted-foreground transition-colors hover:text-foreground"
+            >
+              Talk to the people who built it.
+            </Link>
           </div>
         </div>
       </div>

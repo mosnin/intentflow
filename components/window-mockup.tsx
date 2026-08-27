@@ -15,17 +15,14 @@ import {
 } from "lucide-react";
 import type { ReactNode } from "react";
 
-const CUT =
-  "[clip-path:polygon(5px_0,100%_0,100%_calc(100%-5px),calc(100%-5px)_100%,0_100%,0_5px)]";
-
 type NavItem = { label: string; icon: LucideIcon; active?: boolean };
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Overview", icon: Gauge, active: true },
-  { label: "Threats", icon: Radar },
-  { label: "Endpoints", icon: MonitorSmartphone },
-  { label: "Cloud", icon: Cloud },
-  { label: "Compliance", icon: BadgeCheck },
+  { label: "IntentFlow OSA", icon: Radar },
+  { label: "Authority", icon: MonitorSmartphone },
+  { label: "AI Citations", icon: Cloud },
+  { label: "Case Studies", icon: BadgeCheck },
   { label: "Reports", icon: FileText },
 ];
 
@@ -39,31 +36,31 @@ type Kpi = {
 
 const KPIS: Kpi[] = [
   {
-    label: "Threats Blocked",
-    value: "12,847",
-    delta: "14.2%",
+    label: "Off-site activities",
+    value: "71",
+    delta: "OSA",
     dir: "up",
     icon: ShieldCheck,
   },
   {
-    label: "Active Endpoints",
-    value: "3,204",
-    delta: "2.1%",
+    label: "Ranking signals",
+    value: "14",
+    delta: "GEO",
     dir: "up",
     icon: MonitorSmartphone,
   },
   {
-    label: "Compliance Score",
-    value: "98.6%",
-    delta: "0.8%",
+    label: "AI engines",
+    value: "6",
+    delta: "Direct",
     dir: "up",
     icon: BadgeCheck,
   },
   {
-    label: "Avg. Response",
-    value: "1.2s",
-    delta: "0.3s",
-    dir: "down",
+    label: "Measurement window",
+    value: "27d",
+    delta: "Verified",
+    dir: "up",
     icon: Timer,
   },
 ];
@@ -79,52 +76,44 @@ type Alert = {
 
 const ALERTS: Alert[] = [
   {
-    sev: "Critical",
+    sev: "Legal",
     dot: "bg-foreground",
-    title: "Anomalous login from new region",
-    meta: "identity-provider",
-    time: "2m",
-    status: "Blocked",
+    title: "Personal Injury & Criminal Defense Law",
+    meta: "autocomplete",
+    time: "Live",
+    status: "Verified",
   },
   {
-    sev: "High",
+    sev: "Home Services",
     dot: "bg-foreground/60",
-    title: "Privilege escalation attempt",
-    meta: "server-04",
-    time: "14m",
-    status: "Contained",
+    title: "HVAC Services",
+    meta: "Google + Bing",
+    time: "Live",
+    status: "Verified",
   },
   {
-    sev: "Medium",
+    sev: "Healthcare",
     dot: "bg-foreground/35",
-    title: "Expiring TLS certificate",
-    meta: "api-gateway",
-    time: "1h",
-    status: "Review",
+    title: "Med Spa & Aesthetics",
+    meta: "high-intent demand",
+    time: "Live",
+    status: "Verified",
   },
   {
-    sev: "Low",
+    sev: "B2B SaaS",
     dot: "bg-foreground/20",
-    title: "New device enrolled",
-    meta: "macbook-pro",
-    time: "3h",
-    status: "Resolved",
+    title: "AI Live Commerce",
+    meta: "category search",
+    time: "Live",
+    status: "Verified",
   },
 ];
 
 function Sidebar(): ReactNode {
   return (
     <aside className="hidden w-[212px] shrink-0 flex-col border-r border-border/60 bg-muted/20 lg:flex">
-      {/* Brand */}
-      <div className="flex h-14 items-center gap-2.5 border-b border-border/60 px-4">
-        <span className={`h-6 w-6 bg-foreground ${CUT}`} aria-hidden="true" />
-        <span className="text-[15px] font-semibold tracking-tight">
-          Sentinel
-        </span>
-      </div>
-
       {/* Nav */}
-      <nav className="flex flex-1 flex-col gap-0.5 p-3">
+      <nav className="flex flex-1 flex-col gap-0.5 px-3 pb-3 pt-4">
         <p className="px-2 pb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
           Workspace
         </p>
@@ -155,7 +144,7 @@ function Sidebar(): ReactNode {
             <span className="relative inline-flex h-2 w-2 rounded-full bg-muted-foreground" />
           </span>
           <span className="flex flex-col leading-tight">
-            <span className="text-[11px] font-medium">All systems secure</span>
+            <span className="text-[11px] font-medium">Direct verification</span>
             <span className="text-[10px] text-muted-foreground">
               Updated just now
             </span>
@@ -171,10 +160,10 @@ function Topbar(): ReactNode {
     <div className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 sm:px-5">
       <div className="flex min-w-0 flex-col">
         <h2 className="truncate text-sm font-semibold tracking-tight">
-          Security Overview
+          Search Visibility Overview
         </h2>
         <p className="hidden text-[11px] text-muted-foreground sm:block">
-          Last 24 hours · Global
+          Google, Bing + AI engines
         </p>
       </div>
 
@@ -229,10 +218,10 @@ function ThreatChart(): ReactNode {
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-[13px] font-semibold tracking-tight">
-            Threat Activity
+            Search Presence
           </h3>
           <p className="text-[11px] text-muted-foreground">
-            Detections vs. automated responses
+            Autocomplete vs. AI citations
           </p>
         </div>
         <div className="hidden items-center gap-1 rounded-md border border-border/60 p-0.5 sm:flex">
@@ -255,11 +244,11 @@ function ThreatChart(): ReactNode {
       <div className="mt-3 flex items-center gap-4">
         <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
-          Detections
+          Autocomplete
         </span>
         <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
-          Responses
+          AI citations
         </span>
       </div>
 
@@ -332,7 +321,7 @@ function AlertsCard(): ReactNode {
     <div className="flex min-h-0 flex-col rounded-lg border border-border/60 bg-background p-4">
       <div className="flex items-center justify-between">
         <h3 className="text-[13px] font-semibold tracking-tight">
-          Recent Alerts
+          Verified Campaigns
         </h3>
         <span className="flex items-center gap-0.5 text-[11px] font-medium text-muted-foreground">
           View all
@@ -379,7 +368,7 @@ export function WindowMockup(): ReactNode {
           <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
         </div>
         <span className="pointer-events-none absolute inset-x-0 text-center text-xs font-normal text-muted-foreground">
-          Sentinel
+          IntentFlow
         </span>
       </div>
 

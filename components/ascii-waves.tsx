@@ -139,7 +139,10 @@ const fragmentShader = `
       vec4 fontSample = texture2D(uFontTexture, atlasUV);
       float alpha = fontSample.a;
 
-      vec3 targetColor = uHasVideo ? col : uColor * (gray + 0.1);
+      // The video drives luminance and movement only. Color stays inside the
+      // site's neutral template palette instead of leaking the source video's
+      // blue and violet hues into the interface.
+      vec3 targetColor = uColor * (gray + 0.1);
       vec3 finalColor = targetColor * alpha;
 
       gl_FragColor = vec4(finalColor, alpha);

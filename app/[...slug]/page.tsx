@@ -1,5 +1,6 @@
-import { ContentPage } from "@/components/content-page";
+import { TemplateContentPage } from "@/components/template-content-page";
 import { getPage, routeFromSlug, routes } from "@/lib/content";
+import { structured } from "@/lib/structured-content";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
@@ -32,8 +33,8 @@ export default async function StaticPage({
   params,
 }: PageProps): Promise<ReactNode> {
   const route = routeFromSlug((await params).slug);
-  const page = getPage(route);
+  const page = structured[route];
   if (!page) notFound();
 
-  return <ContentPage page={page} />;
+  return <TemplateContentPage page={page} />;
 }
