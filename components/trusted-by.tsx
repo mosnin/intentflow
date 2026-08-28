@@ -1,14 +1,28 @@
-import { UsersRound } from "lucide-react";
+import bingLogo from "@lobehub/icons-static-svg/icons/bing.svg";
+import claudeLogo from "@lobehub/icons-static-svg/icons/claude.svg";
+import copilotLogo from "@lobehub/icons-static-svg/icons/copilot.svg";
+import geminiLogo from "@lobehub/icons-static-svg/icons/gemini.svg";
+import googleLogo from "@lobehub/icons-static-svg/icons/google.svg";
+import grokLogo from "@lobehub/icons-static-svg/icons/grok.svg";
+import openAiLogo from "@lobehub/icons-static-svg/icons/openai.svg";
+import perplexityLogo from "@lobehub/icons-static-svg/icons/perplexity.svg";
+import Image, { type StaticImageData } from "next/image";
 import type { ReactNode } from "react";
 
-type Brand = { name: string };
+type Brand = {
+  name: string;
+  logo: StaticImageData;
+};
 
 const BRANDS: Brand[] = [
-  { name: "Google" },
-  { name: "Bing" },
-  { name: "ChatGPT" },
-  { name: "Gemini" },
-  { name: "Perplexity" },
+  { name: "Google", logo: googleLogo },
+  { name: "Bing", logo: bingLogo },
+  { name: "ChatGPT", logo: openAiLogo },
+  { name: "Gemini", logo: geminiLogo },
+  { name: "Perplexity", logo: perplexityLogo },
+  { name: "Claude", logo: claudeLogo },
+  { name: "Grok", logo: grokLogo },
+  { name: "Copilot", logo: copilotLogo },
 ];
 
 function CornerPlus({ className }: { className: string }): ReactNode {
@@ -30,42 +44,60 @@ function CornerPlus({ className }: { className: string }): ReactNode {
 
 function BrandLogo({ brand }: { brand: Brand }): ReactNode {
   return (
-    <span
-      role="img"
-      aria-label={brand.name}
-      className="block font-serif text-lg text-foreground/60 transition-opacity duration-200 hover:text-foreground"
+    <li className="text-foreground/55 hover:text-foreground flex shrink-0 items-center gap-2.5 transition-colors duration-200">
+      <Image
+        src={brand.logo}
+        alt=""
+        aria-hidden="true"
+        width={24}
+        height={24}
+        loading="eager"
+        className="h-5 w-5 shrink-0 opacity-75 dark:invert"
+      />
+      <span className="text-[15px] font-semibold tracking-[-0.025em] whitespace-nowrap">
+        {brand.name}
+      </span>
+    </li>
+  );
+}
+
+function BrandRun({ duplicate = false }: { duplicate?: boolean }): ReactNode {
+  return (
+    <ul
+      aria-hidden={duplicate ? "true" : undefined}
+      className={`brand-marquee-copy flex w-max shrink-0 items-center gap-8 px-4 sm:gap-16 sm:px-8 ${duplicate ? "brand-marquee-copy--duplicate" : ""}`}
     >
-      {brand.name}
-    </span>
+      {BRANDS.map((brand) => (
+        <BrandLogo key={brand.name} brand={brand} />
+      ))}
+    </ul>
   );
 }
 
 export function TrustedBy(): ReactNode {
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 sm:px-8 lg:px-10">
-      <div className="relative border border-border">
-        <CornerPlus className="left-0 top-0 -translate-x-1/2 -translate-y-1/2" />
-        <CornerPlus className="right-0 top-0 translate-x-1/2 -translate-y-1/2" />
+      <div className="border-border relative border">
+        <CornerPlus className="top-0 left-0 -translate-x-1/2 -translate-y-1/2" />
+        <CornerPlus className="top-0 right-0 translate-x-1/2 -translate-y-1/2" />
         <CornerPlus className="bottom-0 left-0 -translate-x-1/2 translate-y-1/2" />
-        <CornerPlus className="bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
+        <CornerPlus className="right-0 bottom-0 translate-x-1/2 translate-y-1/2" />
 
         <div className="flex flex-col items-stretch md:flex-row">
-          {/* Label */}
-          <div className="flex shrink-0 items-center justify-center border-b border-border px-6 py-5 md:border-b-0 md:border-r md:py-7">
-            <span className="text-xs font-medium text-muted-foreground">
+          <div className="border-border flex shrink-0 items-center justify-center border-b px-6 py-5 md:border-r md:border-b-0 md:py-7">
+            <span className="text-muted-foreground text-xs font-medium">
               Search no longer happens in one place.
             </span>
           </div>
 
-          <div className="flex flex-1 flex-wrap items-center justify-evenly gap-x-8 gap-y-6 px-8 py-7">
-            {BRANDS.map((brand) => (
-              <BrandLogo key={brand.name} brand={brand} />
-            ))}
-          </div>
-
-          <div className="flex shrink-0 items-center justify-center gap-2 border-t border-border px-6 py-5 text-muted-foreground md:border-l md:border-t-0 md:py-7">
-            <UsersRound className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
-            <span className="text-xs font-medium">Claude · Grok · Copilot</span>
+          <div
+            className="brand-marquee flex min-w-0 flex-1 items-center overflow-hidden py-6"
+            aria-label="Search and AI platforms"
+          >
+            <div className="brand-marquee-track flex w-max">
+              <BrandRun />
+              <BrandRun duplicate />
+            </div>
           </div>
         </div>
       </div>

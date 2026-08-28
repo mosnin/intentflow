@@ -118,6 +118,56 @@ body {
   outline-offset: 2px;
 }
 
+@keyframes brand-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.brand-marquee {
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 7%,
+    black 93%,
+    transparent
+  );
+}
+
+.brand-marquee-track {
+  animation: brand-marquee 30s linear infinite;
+  will-change: transform;
+}
+
+.brand-marquee:hover .brand-marquee-track {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .brand-marquee {
+    overflow-x: auto;
+    mask-image: none;
+    scrollbar-width: none;
+  }
+
+  .brand-marquee::-webkit-scrollbar {
+    display: none;
+  }
+
+  .brand-marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .brand-marquee-copy--duplicate {
+    display: none;
+  }
+}
+
 @media (prefers-contrast: more) {
   :root {
     --muted-foreground: #474747;
