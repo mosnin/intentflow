@@ -289,12 +289,46 @@ const Scene: React.FC<SceneProps> = ({
     }
 
     const video = document.createElement("video");
-    video.src = videoUrl;
-    video.crossOrigin = "Anonymous";
+    // Preserve the theme's video-driven shader; these native attributes and
+    // resume hooks keep that same source reliable across mobile page restores.
+    video.crossOrigin = "anonymous";
     video.loop = true;
     video.muted = true;
+    video.defaultMuted = true;
+    video.autoplay = true;
     video.playsInline = true;
-    video.play().catch((e) => console.error("Video play failed", e));
+    video.preload = "auto";
+    video.disablePictureInPicture = true;
+    video.setAttribute("muted", "");
+    video.setAttribute("autoplay", "");
+    video.setAttribute("loop", "");
+    video.setAttribute("playsinline", "");
+    video.setAttribute("webkit-playsinline", "");
+    video.setAttribute("preload", "auto");
+    video.src = videoUrl;
+    video.load();
+
+    const play = () => {
+      if (document.visibilityState !== "hidden" && video.paused) {
+        void video.play().catch(() => {});
+      }
+    };
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        video.pause();
+      } else {
+        play();
+      }
+    };
+
+    video.addEventListener("loadeddata", play);
+    video.addEventListener("canplay", play);
+    window.addEventListener("pageshow", play);
+    window.addEventListener("pointerdown", play, { passive: true });
+    window.addEventListener("touchstart", play, { passive: true });
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    play();
 
     const texture = new THREE.VideoTexture(video);
     texture.minFilter = THREE.LinearFilter;
@@ -304,8 +338,15 @@ const Scene: React.FC<SceneProps> = ({
     videoElRef.current = video;
 
     return () => {
+      video.removeEventListener("loadeddata", play);
+      video.removeEventListener("canplay", play);
+      window.removeEventListener("pageshow", play);
+      window.removeEventListener("pointerdown", play);
+      window.removeEventListener("touchstart", play);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       video.pause();
       video.src = "";
+      video.load();
       texture.dispose();
       videoTextureRef.current = null;
       videoElRef.current = null;
