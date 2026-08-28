@@ -81,6 +81,16 @@ const OUTCOMES = [
 
 const PANEL_TRANSITION = [0.22, 1, 0.36, 1] as const;
 
+function buildSearchKeyword({
+  industry,
+  city,
+}: Pick<BusinessDetails, "industry" | "city">): string {
+  const normalizedIndustry = industry.replace(/\s+/g, " ").trim();
+  const normalizedCity = city.split(",")[0]?.replace(/\s+/g, " ").trim();
+
+  return [normalizedIndustry, normalizedCity].filter(Boolean).join(" ");
+}
+
 function buildCalendlyEmbedUrl(bookingUrl: string | null): string | null {
   if (!bookingUrl) return null;
 
@@ -365,13 +375,11 @@ function PhaseStatus({ phase }: { phase: SearchPhase }): ReactNode {
 
 function SuggestionRow({
   primary,
-  secondary,
-  branded = false,
+  emphasis,
   order,
 }: {
   primary: string;
-  secondary?: string;
-  branded?: boolean;
+  emphasis?: string;
   order: number;
 }): ReactNode {
   return (
@@ -383,43 +391,21 @@ function SuggestionRow({
         delay: order * 0.04,
         ease: PANEL_TRANSITION,
       }}
-      className={`border-border/55 overflow-hidden border-t ${
-        branded ? "bg-[#b8500c]/[0.075]" : "bg-background"
-      }`}
+      className="border-border/55 bg-background overflow-hidden border-t"
     >
       <div className="flex min-h-[41px] items-center gap-3 px-3.5 py-1">
-        <span
-          className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-md border ${
-            branded
-              ? "border-[#b8500c]/35 text-[#b8500c]"
-              : "border-border/60 text-muted-foreground"
-          }`}
-        >
-          {branded ? (
-            <Building2 className="h-3.5 w-3.5" strokeWidth={1.8} />
-          ) : (
-            <Search className="h-3.5 w-3.5" strokeWidth={1.6} />
-          )}
+        <span className="border-border/60 text-muted-foreground flex h-6 w-6 shrink-0 items-center justify-center rounded-md border">
+          <Search className="h-3.5 w-3.5" strokeWidth={1.6} />
         </span>
-        <span className="min-w-0 flex-1">
-          <span
-            className={`block truncate text-xs ${
-              branded ? "font-semibold" : "text-muted-foreground"
-            }`}
-          >
-            {primary}
-          </span>
-          {secondary ? (
-            <span className="text-muted-foreground mt-0.5 block truncate text-[10px]">
-              {secondary}
-            </span>
+        <span className="text-foreground min-w-0 flex-1 text-xs leading-4 break-words">
+          {primary}
+          {emphasis ? (
+            <>
+              {" "}
+              <strong className="font-semibold">{emphasis}</strong>
+            </>
           ) : null}
         </span>
-        {branded ? (
-          <span className="hidden rounded border border-[#b8500c]/25 px-1.5 py-0.5 font-mono text-[8px] tracking-[0.11em] text-[#b8500c] uppercase sm:inline-flex">
-            Your brand
-          </span>
-        ) : null}
       </div>
     </motion.div>
   );
@@ -494,23 +480,31 @@ function SearchSimulation({
           <AnimatePresence initial={false}>
             {context && business && visibleRows >= 1 ? (
               <SuggestionRow
-                key="brand-result"
-                primary={business.businessName}
-                secondary={`Suggested for “${context.categorySearch}” · ${context.businessDescriptor}`}
-                branded
+                key="base-keyword"
+                primary={buildSearchKeyword(business)}
                 order={0}
               />
             ) : null}
+            {context && business && visibleRows >= 2 ? (
+              <SuggestionRow
+                key="business-keyword"
+                primary={buildSearchKeyword(business)}
+                emphasis={business.businessName.replace(/\s+/g, " ").trim()}
+                order={1}
+              />
+            ) : null}
             {context
-              ? context.searchSuggestions.map((suggestion, index) =>
-                  visibleRows >= index + 2 ? (
-                    <SuggestionRow
-                      key={suggestion}
-                      primary={suggestion}
-                      order={index + 1}
-                    />
-                  ) : null
-                )
+              ? context.searchSuggestions
+                  .slice(1)
+                  .map((suggestion, index) =>
+                    visibleRows >= index + 3 ? (
+                      <SuggestionRow
+                        key={`${index}-${suggestion}`}
+                        primary={suggestion}
+                        order={index + 2}
+                      />
+                    ) : null
+                  )
               : null}
           </AnimatePresence>
 
@@ -830,8 +824,11 @@ export function InteractiveDemo({
     () => buildCalendlyEmbedUrl(bookingUrl),
     [bookingUrl]
   );
+  const searchKeyword = submittedBusiness
+    ? buildSearchKeyword(submittedBusiness)
+    : "";
   const typedQuery = context
-    ? Array.from(context.categorySearch).slice(0, typedCharacters).join("")
+    ? Array.from(searchKeyword).slice(0, typedCharacters).join("")
     : "";
 
   useEffect(() => {
@@ -840,7 +837,7 @@ export function InteractiveDemo({
     if (reduceMotion) return;
 
     if (phase === "typing") {
-      const length = Array.from(context.categorySearch).length;
+      const length = Array.from(searchKeyword).length;
       const timer = window.setTimeout(
         () => {
           if (typedCharacters < length) {
@@ -865,7 +862,14 @@ export function InteractiveDemo({
       visibleRows < 4 ? 210 : 180
     );
     return () => window.clearTimeout(timer);
-  }, [context, phase, reduceMotion, typedCharacters, visibleRows]);
+  }, [
+    context,
+    phase,
+    reduceMotion,
+    searchKeyword,
+    typedCharacters,
+    visibleRows,
+  ]);
 
   useEffect(() => {
     if (previousStageRef.current === stage) return;
@@ -922,7 +926,7 @@ export function InteractiveDemo({
       setSubmittedBusiness({ ...details });
       setContext(payload.context);
       if (reduceMotion) {
-        setTypedCharacters(Array.from(payload.context.categorySearch).length);
+        setTypedCharacters(Array.from(buildSearchKeyword(details)).length);
         setVisibleRows(4);
         setPhase("complete");
       } else {
