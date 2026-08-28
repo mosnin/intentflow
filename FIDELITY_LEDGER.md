@@ -9,6 +9,7 @@ The public-site capture is retained as research provenance, not treated as verif
 | ------------------- | --------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------- |
 | Navigation          | Compact fixed header, left lockup, two cut-corner CTAs          | Same geometry; Products contains only services, Industries has its own menu, and Case Studies remains top-level                                                                  | Match with cleaned information architecture |
 | Hero                | Centered editorial headline, muted lead, paired CTAs            | Same hierarchy and spacing with reviewed IntentFlow positioning                                                                                                                  | Match                                       |
+| Hero motion         | Restrained entrance motion                                      | The setup remains stable while “Own the answer.” types once, settles permanently, and renders immediately when reduced motion is preferred                                       | Intentional, accessibility-safe extension   |
 | Atmospheric field   | Full-bleed animated ASCII field                                 | Same treatment recolored to the requested burnt orange and neutral greys                                                                                                         | Match with requested palette                |
 | Product window      | Framed dashboard with sidebar and data panels                   | Same shell and proportions; duplicate logo, invented campaign rows, performance totals, chart data, and verification statuses removed                                            | Intentional evidence-safe adaptation        |
 | Type and surfaces   | Geist/serif pairing, mono labels, fine borders, clipped corners | Same system across the sitemap, with legible body sizing and light/dark support                                                                                                  | Match                                       |
@@ -32,6 +33,7 @@ The public-site capture is retained as research provenance, not treated as verif
 - Next.js production build: passed; 26 static pages generated
 - Desktop browser review at 1280x720: one H1, no horizontal overflow, no blocked claims, and no console errors
 - Mobile browser review at 390x844: no horizontal overflow; navigation and industry search example operate correctly
+- Hero typing review: stable 414px desktop and 287px mobile phrase width from empty cursor through final text; exact accessible H1 label preserved throughout
 - Light and dark themes: visually inspected
 - Reference comparison: navigation, hero hierarchy, ASCII field, clipped actions, and product-window composition inspected against the purchased template
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { CutButton } from "@/components/cut-button";
+import { TypingAnimation } from "@/components/ui/typing-animation";
 import {
   fadeInUp,
   reducedMotionVariants,
@@ -62,11 +63,28 @@ export function Hero(): ReactNode {
           <motion.h1
             variants={item}
             transition={itemTransition}
+            aria-label="Engineer the search. Own the answer."
             className="font-serif text-[2.6rem] leading-[1.04] font-normal tracking-[-0.025em] text-balance sm:text-5xl lg:text-[3.75rem]"
           >
             Engineer the search.{" "}
-            <span className="font-sans font-medium tracking-tight">
-              Own the answer.
+            <span
+              aria-hidden="true"
+              className="relative inline-block w-[6.9em] font-sans font-medium tracking-tight whitespace-nowrap"
+            >
+              <span className="invisible select-none">&nbsp;</span>
+              {prefersReducedMotion ? (
+                <span className="absolute inset-0">Own the answer.</span>
+              ) : (
+                <TypingAnimation
+                  className="absolute inset-0 leading-[inherit] tracking-[inherit] whitespace-nowrap"
+                  delay={900}
+                  duration={68}
+                  startOnView={false}
+                  cursorClassName="text-[#b8500c]"
+                >
+                  Own the answer.
+                </TypingAnimation>
+              )}
             </span>
           </motion.h1>
 
