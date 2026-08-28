@@ -1,10 +1,10 @@
 import { Hero } from "@/components/hero";
 import { HeroWaves } from "@/components/hero-waves";
+import { InteractiveDemo } from "@/components/interactive-demo";
 import { Footer } from "@/components/footer";
 import { Nav } from "@/components/nav";
 import { TemplateSections } from "@/components/template-content-page";
 import { TrustedBy } from "@/components/trusted-by";
-import { WindowMockup } from "@/components/window-mockup";
 import { structured } from "@/lib/structured-content";
 import { InView, MotionSection } from "@/lib/motion";
 import { createMetadata, siteConfig } from "@/lib/metadata";
@@ -44,13 +44,13 @@ export default function HomePage(): ReactNode {
             transition={{ duration: 0.85, delay: 0.55, ease: SOFT_EASE }}
             className="relative px-5 pb-24 sm:px-8 lg:px-10"
           >
-            <WindowMockup />
+            <InteractiveDemo bookingUrl={process.env.CALENDLY_URL ?? null} />
           </MotionSection>
         </div>
         <InView>
           <TrustedBy />
         </InView>
-        <p className="mx-auto max-w-[1180px] px-5 font-mono text-[10px] uppercase tracking-[0.16em] text-[#b8500c] sm:px-8 lg:px-10">
+        <p className="mx-auto max-w-[1180px] px-5 font-mono text-[10px] tracking-[0.16em] text-[#b8500c] uppercase sm:px-8 lg:px-10">
           The strategic context
         </p>
         <TemplateSections sections={homePage.sections} success={undefined} />
