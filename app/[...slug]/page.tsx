@@ -1,5 +1,5 @@
 import { TemplateContentPage } from "@/components/template-content-page";
-import { getPage, routeFromSlug, routes } from "@/lib/content";
+import { routeFromSlug, routes } from "@/lib/content";
 import { structured } from "@/lib/structured-content";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
@@ -19,7 +19,7 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const route = routeFromSlug((await params).slug);
-  const page = getPage(route);
+  const page = structured[route];
   if (!page) return {};
 
   return {

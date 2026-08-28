@@ -1,4 +1,4 @@
-import structuredPages from "@/content/structured-pages.json";
+import structuredPages from "@/content/published-pages.json";
 import type { PageKind } from "@/lib/content";
 
 export type ContentBlock = {

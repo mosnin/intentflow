@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "content:publish": "python3 scripts/publish_content.py",
+    "content:check": "node scripts/check-content-integrity.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint . --ext .ts,.tsx,.js,.jsx,.mjs",

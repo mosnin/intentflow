@@ -77,9 +77,8 @@ export function Hero(): ReactNode {
           >
             Buyers no longer search in one place. They discover, evaluate, and
             decide across Google, Bing, and AI answer engines — ChatGPT, Gemini,
-            Perplexity, Claude, Grok, Copilot. IntentFlow engineers your brand
-            into the two moments that decide outcomes: when buyers start typing,
-            and when AI generates the answer. The middle takes care of itself.
+            Perplexity, Claude, Grok, Copilot. IntentFlow focuses on the moments
+            when a search begins and when an AI-generated answer is formed.
           </motion.p>
 
           <motion.div

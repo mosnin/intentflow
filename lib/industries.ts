@@ -21,7 +21,7 @@ export const industryProfiles: IndustryProfile[] = [
   {
     route: "/verticals/hospitality",
     name: "Hospitality",
-    description: "Direct bookings instead of OTA commissions.",
+    description: "Help guests reach your booking experience directly.",
     buyer: "guest",
     keywords: [
       "boutique hotel in [city]",
@@ -37,7 +37,7 @@ export const industryProfiles: IndustryProfile[] = [
     keywords: [
       "personal injury lawyer near me",
       "car accident attorney in [city]",
-      "no win no fee lawyer near me",
+      "injury law firm near me",
     ],
   },
   {
@@ -109,5 +109,5 @@ export const industryProfiles: IndustryProfile[] = [
 ];
 
 export const industryProfilesByRoute = Object.fromEntries(
-  industryProfiles.map((profile) => [profile.route, profile]),
+  industryProfiles.map((profile) => [profile.route, profile])
 ) as Record<string, IndustryProfile>;

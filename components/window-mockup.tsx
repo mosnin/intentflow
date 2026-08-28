@@ -1,16 +1,13 @@
 import {
-  ArrowDownRight,
-  ArrowUpRight,
-  BadgeCheck,
+  ArrowRight,
   Bell,
-  Cloud,
+  Bot,
   FileText,
   Gauge,
+  Globe2,
   MonitorSmartphone,
   Radar,
   Search,
-  ShieldCheck,
-  Timer,
   type LucideIcon,
 } from "lucide-react";
 import type { ReactNode } from "react";
@@ -21,100 +18,33 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Overview", icon: Gauge, active: true },
   { label: "IntentFlow OSA", icon: Radar },
   { label: "Authority", icon: MonitorSmartphone },
-  { label: "AI Citations", icon: Cloud },
-  { label: "Case Studies", icon: BadgeCheck },
+  { label: "Search paths", icon: Search },
   { label: "Reports", icon: FileText },
 ];
 
-type Kpi = {
-  label: string;
-  value: string;
-  delta: string;
-  dir: "up" | "down";
-  icon: LucideIcon;
-};
-
-const KPIS: Kpi[] = [
+const SURFACES = [
   {
-    label: "Off-site activities",
-    value: "71",
-    delta: "OSA",
-    dir: "up",
-    icon: ShieldCheck,
+    icon: Search,
+    title: "Autocomplete",
+    detail: "Google and Bing search formation",
   },
   {
-    label: "Ranking signals",
-    value: "14",
-    delta: "GEO",
-    dir: "up",
-    icon: MonitorSmartphone,
+    icon: Bot,
+    title: "AI answers",
+    detail: "Citation and recommendation surfaces",
   },
   {
-    label: "AI engines",
-    value: "6",
-    delta: "Direct",
-    dir: "up",
-    icon: BadgeCheck,
+    icon: Globe2,
+    title: "Owned results",
+    detail: "The brand's website and profiles",
   },
-  {
-    label: "Measurement window",
-    value: "27d",
-    delta: "Verified",
-    dir: "up",
-    icon: Timer,
-  },
-];
-
-type Alert = {
-  sev: string;
-  dot: string;
-  title: string;
-  meta: string;
-  time: string;
-  status: string;
-};
-
-const ALERTS: Alert[] = [
-  {
-    sev: "Legal",
-    dot: "bg-foreground",
-    title: "Personal Injury & Criminal Defense Law",
-    meta: "autocomplete",
-    time: "Live",
-    status: "Verified",
-  },
-  {
-    sev: "Home Services",
-    dot: "bg-foreground/60",
-    title: "HVAC Services",
-    meta: "Google + Bing",
-    time: "Live",
-    status: "Verified",
-  },
-  {
-    sev: "Healthcare",
-    dot: "bg-foreground/35",
-    title: "Med Spa & Aesthetics",
-    meta: "high-intent demand",
-    time: "Live",
-    status: "Verified",
-  },
-  {
-    sev: "B2B SaaS",
-    dot: "bg-foreground/20",
-    title: "AI Live Commerce",
-    meta: "category search",
-    time: "Live",
-    status: "Verified",
-  },
-];
+] as const;
 
 function Sidebar(): ReactNode {
   return (
-    <aside className="hidden w-[212px] shrink-0 flex-col border-r border-border/60 bg-muted/20 lg:flex">
-      {/* Nav */}
-      <nav className="flex flex-1 flex-col gap-0.5 px-3 pb-3 pt-4">
-        <p className="px-2 pb-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">
+    <aside className="bg-muted/20 border-border/60 hidden w-[212px] shrink-0 flex-col border-r lg:flex">
+      <nav className="flex flex-1 flex-col gap-0.5 px-3 pt-4 pb-3">
+        <p className="text-muted-foreground/70 px-2 pb-1.5 text-[10px] font-medium tracking-wider uppercase">
           Workspace
         </p>
         {NAV_ITEMS.map((item) => (
@@ -122,8 +52,8 @@ function Sidebar(): ReactNode {
             key={item.label}
             className={`flex items-center gap-2.5 rounded-md px-2.5 py-2 text-[13px] transition-colors ${
               item.active
-                ? "bg-foreground/[0.06] font-medium text-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "bg-foreground/[0.06] text-foreground font-medium"
+                : "text-muted-foreground"
             }`}
           >
             <item.icon
@@ -136,17 +66,15 @@ function Sidebar(): ReactNode {
         ))}
       </nav>
 
-      {/* Footer status */}
-      <div className="border-t border-border/60 p-3">
-        <div className="flex items-center gap-2 rounded-md border border-border/60 bg-background px-2.5 py-2">
-          <span className="relative flex h-2 w-2 shrink-0">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-muted-foreground/40" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-muted-foreground" />
-          </span>
+      <div className="border-border/60 border-t p-3">
+        <div className="border-border/60 bg-background flex items-center gap-2 rounded-md border px-2.5 py-2">
+          <span className="h-2 w-2 shrink-0 rounded-full bg-[#b8500c]" />
           <span className="flex flex-col leading-tight">
-            <span className="text-[11px] font-medium">Direct verification</span>
-            <span className="text-[10px] text-muted-foreground">
-              Updated just now
+            <span className="text-[11px] font-medium">
+              Illustrative preview
+            </span>
+            <span className="text-muted-foreground text-[10px]">
+              No campaign data shown
             </span>
           </span>
         </div>
@@ -157,241 +85,171 @@ function Sidebar(): ReactNode {
 
 function Topbar(): ReactNode {
   return (
-    <div className="flex h-14 shrink-0 items-center justify-between gap-3 border-b border-border/60 px-4 sm:px-5">
+    <div className="border-border/60 flex h-14 shrink-0 items-center justify-between gap-3 border-b px-4 sm:px-5">
       <div className="flex min-w-0 flex-col">
         <h2 className="truncate text-sm font-semibold tracking-tight">
-          Search Visibility Overview
+          Search Journey Preview
         </h2>
-        <p className="hidden text-[11px] text-muted-foreground sm:block">
-          Google, Bing + AI engines
+        <p className="text-muted-foreground hidden text-[11px] sm:block">
+          Conceptual product flow
         </p>
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="hidden h-8 w-44 items-center gap-2 rounded-md border border-border/60 bg-muted/40 px-2.5 text-muted-foreground md:flex">
-          <Search className="h-3.5 w-3.5" aria-hidden="true" />
-          <span className="text-xs">Search</span>
-          <kbd className="ml-auto rounded border border-border/60 bg-background px-1 text-[10px] font-medium">
-            ⌘K
-          </kbd>
-        </div>
-        <span className="flex h-8 w-8 items-center justify-center rounded-md border border-border/60 text-muted-foreground">
-          <Bell className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
+        <span className="border-border/60 text-muted-foreground flex h-8 items-center rounded-md border px-2.5 font-mono text-[9px] tracking-[0.12em] uppercase">
+          Example only
         </span>
-        <span className="grid h-8 w-8 place-items-center rounded-full bg-foreground text-[11px] font-semibold text-background">
-          AR
+        <span className="border-border/60 text-muted-foreground flex h-8 w-8 items-center justify-center rounded-md border">
+          <Bell className="h-4 w-4" strokeWidth={1.75} aria-hidden="true" />
         </span>
       </div>
     </div>
   );
 }
 
-function KpiCard({ kpi }: { kpi: Kpi }): ReactNode {
-  const positive = kpi.dir === "up";
-  const Arrow = positive ? ArrowUpRight : ArrowDownRight;
+function JourneyStep({
+  label,
+  title,
+  detail,
+  accent = false,
+}: {
+  label: string;
+  title: string;
+  detail: string;
+  accent?: boolean;
+}): ReactNode {
   return (
-    <div className="flex flex-col justify-between rounded-lg border border-border/60 bg-background p-3">
-      <div className="flex items-center justify-between">
-        <span className="text-[11px] text-muted-foreground">{kpi.label}</span>
-        <kpi.icon
-          className="h-3.5 w-3.5 text-muted-foreground/60"
+    <div
+      className={`border-border/60 min-w-0 rounded-lg border p-3.5 ${
+        accent ? "bg-[#b8500c]/[0.07]" : "bg-background"
+      }`}
+    >
+      <p className="text-muted-foreground font-mono text-[9px] tracking-[0.13em] uppercase">
+        {label}
+      </p>
+      <p className="mt-2 truncate text-[13px] font-semibold tracking-tight">
+        {title}
+      </p>
+      <p className="text-muted-foreground mt-1 text-[11px] leading-4">
+        {detail}
+      </p>
+    </div>
+  );
+}
+
+function JourneyPanel(): ReactNode {
+  return (
+    <section className="border-border/60 bg-background flex min-h-0 flex-col rounded-lg border p-4 lg:col-span-2">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h3 className="text-[13px] font-semibold tracking-tight">
+            Illustrative search path
+          </h3>
+          <p className="text-muted-foreground text-[11px]">
+            A conceptual view of the OSA journey
+          </p>
+        </div>
+        <span className="text-muted-foreground font-mono text-[9px] tracking-[0.12em] uppercase">
+          Not live data
+        </span>
+      </div>
+
+      <div className="border-border/60 bg-muted/25 mt-4 flex min-h-11 items-center gap-2.5 rounded-md border px-3">
+        <Search
+          className="text-muted-foreground h-3.5 w-3.5"
           strokeWidth={1.75}
           aria-hidden="true"
         />
-      </div>
-      <div className="mt-2 flex items-end justify-between gap-2">
-        <span className="text-xl font-semibold tracking-tight">
-          {kpi.value}
-        </span>
-        <span className="flex items-center gap-0.5 text-[11px] font-medium text-muted-foreground">
-          <Arrow className="h-3 w-3" aria-hidden="true" />
-          {kpi.delta}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-function ThreatChart(): ReactNode {
-  return (
-    <div className="flex min-h-0 flex-col rounded-lg border border-border/60 bg-background p-4 lg:col-span-2">
-      <div className="flex items-start justify-between">
-        <div>
-          <h3 className="text-[13px] font-semibold tracking-tight">
-            Search Presence
-          </h3>
-          <p className="text-[11px] text-muted-foreground">
-            Autocomplete vs. AI citations
-          </p>
-        </div>
-        <div className="hidden items-center gap-1 rounded-md border border-border/60 p-0.5 sm:flex">
-          {["24h", "7d", "30d"].map((r, i) => (
-            <span
-              key={r}
-              className={`rounded px-2 py-0.5 text-[11px] font-medium ${
-                i === 0
-                  ? "bg-foreground/[0.06] text-foreground"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {r}
-            </span>
-          ))}
-        </div>
+        <span className="text-muted-foreground text-xs">[service] near me</span>
       </div>
 
-      {/* Legend */}
-      <div className="mt-3 flex items-center gap-4">
-        <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-foreground" />
-          Autocomplete
-        </span>
-        <span className="flex items-center gap-1.5 text-[11px] text-muted-foreground">
-          <span className="h-1.5 w-1.5 rounded-full bg-muted-foreground/40" />
-          AI citations
-        </span>
-      </div>
-
-      {/* Chart */}
-      <div className="relative mt-3 min-h-0 flex-1 text-foreground">
-        <svg
-          viewBox="0 0 600 200"
-          preserveAspectRatio="none"
-          className="h-full w-full"
+      <div className="mt-4 grid min-h-0 flex-1 items-center gap-2 sm:grid-cols-[1fr_auto_1fr_auto_1fr]">
+        <JourneyStep
+          label="Search begins"
+          title="Category query"
+          detail="A buyer starts with an unbranded need."
+        />
+        <ArrowRight
+          className="text-muted-foreground hidden h-4 w-4 sm:block"
+          strokeWidth={1.5}
           aria-hidden="true"
-        >
-          <defs>
-            <linearGradient id="threatFill" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="currentColor" stopOpacity="0.16" />
-              <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
-          {/* gridlines */}
-          {[40, 80, 120, 160].map((y) => (
-            <line
-              key={y}
-              x1="0"
-              y1={y}
-              x2="600"
-              y2={y}
-              stroke="currentColor"
-              strokeOpacity="0.08"
-              strokeWidth="1"
-              vectorEffect="non-scaling-stroke"
-            />
-          ))}
-
-          {/* responses (muted, dashed) */}
-          <path
-            d="M0,165 C40,160 50,150 90,150 C140,150 150,128 190,126 C240,124 250,140 300,132 C350,124 360,104 410,100 C460,96 470,108 510,104 C550,101 570,92 600,90"
-            fill="none"
-            stroke="currentColor"
-            strokeOpacity="0.28"
-            strokeWidth="1.5"
-            strokeDasharray="4 4"
-            strokeLinecap="round"
-            vectorEffect="non-scaling-stroke"
-          />
-
-          {/* detections area */}
-          <path
-            d="M0,140 C30,130 30,128 60,120 C90,112 100,138 120,135 C150,131 155,98 180,95 C210,92 215,114 240,110 C270,106 280,72 300,70 C330,68 335,88 360,85 C390,82 400,57 420,55 C450,53 455,78 480,75 C510,72 520,42 540,40 C570,38 580,54 600,52 L600,200 L0,200 Z"
-            fill="url(#threatFill)"
-            stroke="none"
-          />
-          {/* detections line */}
-          <path
-            d="M0,140 C30,130 30,128 60,120 C90,112 100,138 120,135 C150,131 155,98 180,95 C210,92 215,114 240,110 C270,106 280,72 300,70 C330,68 335,88 360,85 C390,82 400,57 420,55 C450,53 455,78 480,75 C510,72 520,42 540,40 C570,38 580,54 600,52"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            vectorEffect="non-scaling-stroke"
-          />
-        </svg>
+        />
+        <JourneyStep
+          label="OSA moment"
+          title="Your Brand"
+          detail="A branded suggestion appears in the example flow."
+          accent
+        />
+        <ArrowRight
+          className="text-muted-foreground hidden h-4 w-4 sm:block"
+          strokeWidth={1.5}
+          aria-hidden="true"
+        />
+        <JourneyStep
+          label="Owned destination"
+          title="Official website"
+          detail="The branded search leads toward owned results."
+        />
       </div>
-    </div>
+    </section>
   );
 }
 
-function AlertsCard(): ReactNode {
+function SurfacesPanel(): ReactNode {
   return (
-    <div className="flex min-h-0 flex-col rounded-lg border border-border/60 bg-background p-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-[13px] font-semibold tracking-tight">
-          Verified Campaigns
-        </h3>
-        <span className="flex items-center gap-0.5 text-[11px] font-medium text-muted-foreground">
-          View all
-          <ArrowUpRight className="h-3 w-3" aria-hidden="true" />
-        </span>
-      </div>
+    <section className="border-border/60 bg-background flex min-h-0 flex-col rounded-lg border p-4">
+      <h3 className="text-[13px] font-semibold tracking-tight">
+        Search surfaces
+      </h3>
+      <p className="text-muted-foreground text-[11px]">
+        Where the strategy is designed to operate
+      </p>
 
-      <ul className="mt-2 flex min-h-0 flex-1 flex-col divide-y divide-border/50 overflow-hidden">
-        {ALERTS.map((a) => (
-          <li
-            key={a.title}
-            className="flex items-center gap-2.5 py-2.5 first:pt-1"
-          >
-            <span
-              className={`mt-1 h-1.5 w-1.5 shrink-0 self-start rounded-full ${a.dot}`}
-              aria-hidden="true"
-            />
-            <span className="flex min-w-0 flex-1 flex-col">
-              <span className="truncate text-xs font-medium tracking-tight">
-                {a.title}
-              </span>
-              <span className="truncate text-[11px] text-muted-foreground">
-                {a.sev} · {a.meta} · {a.time}
-              </span>
+      <ul className="border-border/50 mt-3 flex flex-1 flex-col divide-y overflow-hidden">
+        {SURFACES.map((surface) => (
+          <li key={surface.title} className="flex items-start gap-3 py-3">
+            <span className="border-border/60 text-muted-foreground flex h-7 w-7 shrink-0 items-center justify-center rounded-md border">
+              <surface.icon
+                className="h-3.5 w-3.5"
+                strokeWidth={1.65}
+                aria-hidden="true"
+              />
             </span>
-            <span className="shrink-0 rounded border border-border/60 px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-              {a.status}
+            <span className="min-w-0">
+              <span className="block text-xs font-medium">{surface.title}</span>
+              <span className="text-muted-foreground mt-0.5 block text-[11px] leading-4">
+                {surface.detail}
+              </span>
             </span>
           </li>
         ))}
       </ul>
-    </div>
+    </section>
   );
 }
 
 export function WindowMockup(): ReactNode {
   return (
-    <div className="mx-auto max-w-[1100px] overflow-hidden rounded-2xl border border-border/60 bg-background shadow-2xl shadow-black/[0.08]">
-      {/* Title bar */}
-      <div className="relative flex h-7 items-center border-b border-border/60 px-2.5">
+    <div className="border-border/60 bg-background mx-auto max-w-[1100px] overflow-hidden rounded-2xl border shadow-2xl shadow-black/[0.08]">
+      <div className="border-border/60 relative flex h-7 items-center border-b px-2.5">
         <div className="flex items-center gap-1.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e]" />
-          <span className="h-2.5 w-2.5 rounded-full bg-[#28c840]" />
+          <span className="bg-foreground/20 h-2.5 w-2.5 rounded-full" />
+          <span className="bg-foreground/20 h-2.5 w-2.5 rounded-full" />
+          <span className="h-2.5 w-2.5 rounded-full bg-[#b8500c]" />
         </div>
-        <span className="pointer-events-none absolute inset-x-0 text-center text-xs font-normal text-muted-foreground">
+        <span className="text-muted-foreground pointer-events-none absolute inset-x-0 text-center text-xs font-normal">
           IntentFlow
         </span>
       </div>
 
-      {/* App */}
-      <div className="flex h-[560px]">
+      <div className="flex h-[520px]">
         <Sidebar />
 
         <section className="flex min-w-0 flex-1 flex-col">
           <Topbar />
-
-          <main className="flex min-h-0 flex-1 flex-col gap-3 p-3 sm:p-4">
-            {/* KPI row */}
-            <div className="grid shrink-0 grid-cols-2 gap-3 lg:grid-cols-4">
-              {KPIS.map((kpi) => (
-                <KpiCard key={kpi.label} kpi={kpi} />
-              ))}
-            </div>
-
-            {/* Chart + alerts */}
-            <div className="grid min-h-0 flex-1 grid-cols-1 gap-3 lg:grid-cols-3">
-              <ThreatChart />
-              <AlertsCard />
-            </div>
+          <main className="grid min-h-0 flex-1 grid-cols-1 gap-3 p-3 sm:p-4 lg:grid-cols-3">
+            <JourneyPanel />
+            <SurfacesPanel />
           </main>
         </section>
       </div>
