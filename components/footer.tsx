@@ -147,6 +147,13 @@ export function Footer(): ReactNode {
                 <CutButton variant="outline" href="/assessment">
                   Free assessment
                 </CutButton>
+                <CutButton
+                  variant="outline"
+                  href="/intentflow-brochure"
+                  download="IntentFlow-brochure.pdf"
+                >
+                  Download brochure
+                </CutButton>
               </div>
             </FooterColumn>
           </div>
